@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="icon" type="image/png" href="fab-icon.png"/>
+  <title>Destinations — Hilway Travels</title>
+  <meta name="description" content="Explore Hilway Travels' curated domestic and international tour packages. Discover the Philippines and the world with us."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'" fetchpriority="low"/>
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet"/></noscript>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --orange: #F5A623;
+      --blue: #0057A8;
+      --light-gray: #e8e8e8;
+      --text-dark: #222;
+      --text-gray: #555;
+      --bg-gray: #f5f5f5;
+      --container: 1200px;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Open Sans', sans-serif; color: var(--text-dark); overflow-x: hidden; }
+
+    /* ══ PROGRESS BAR ══ */
+    #read-progress {
+      position: fixed; top: 0; left: 0; z-index: 9999;
+      height: 3px; width: 0%;
+      background: linear-gradient(to right, var(--blue), var(--orange));
+      transition: width 0.1s linear; pointer-events: none;
+    }
+
+    /* ══ NAVBAR ══ */
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(16px, 4vw, 60px);
+      height: 70px; background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
+      position: sticky; top: 0; z-index: 200;
+      transition: box-shadow .3s;
+    }
+    nav.scrolled { box-shadow: 0 4px 24px rgba(0,0,0,.14); }
+    .logo { width: 100px; height: auto; display: flex; align-items: center; text-decoration: none; margin-right: auto; }
+    nav ul { list-style: none; display: flex; gap: clamp(16px, 3vw, 40px); }
+    nav ul a {
+      text-decoration: none; font-family: 'Montserrat', sans-serif;
+      font-size: clamp(10px, 1vw, 13px); font-weight: 600;
+      color: var(--text-dark); letter-spacing: 1px; transition: color .2s ease;
+      position: relative; display: inline-block;
+    }
+    nav ul a::after {
+      content: ''; position: absolute; left: 0; bottom: -5px;
+      width: 0; height: 2px; background-color: var(--blue); transition: width .3s ease;
+    }
+    nav ul a:hover { color: var(--blue); }
+    nav ul a:hover::after { width: 100%; }
+    nav ul a.active { color: var(--blue); }
+    nav ul a.active::after { width: 100%; }
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:4px; background:none; border:none; }
+    .hamburger span { width:24px; height:2px; background:var(--text-dark); border-radius:2px; transition:.3s; display:block; }
+    .nav-mobile { display:none; flex-direction:column; background:#fff; padding:16px clamp(16px,4vw,60px); gap:14px; box-shadow:0 4px 10px rgba(0,0,0,.1); }
+    .nav-mobile a { text-decoration:none; font-family:'Montserrat',sans-serif; font-size:13px; font-weight:600; color:var(--text-dark); letter-spacing:1px; }
+    .nav-mobile.open { display:flex; }
+
+    /* ══ HERO ══ */
+    .dest-hero {
+      position: relative; min-height: clamp(160px, 34vw, 300px);
+      display: flex; align-items: center; justify-content: center; text-align: center;
+      overflow: hidden; background: #001f3f;
+    }
+    .dest-hero img.hero-bg-img {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.45; display: block;
+    }
+    .dest-hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(0,30,80,0.75) 0%, rgba(0,87,168,0.55) 100%);
+    }
+    .dest-hero-content {
+      position: relative; z-index: 2; color: #fff; padding: 40px clamp(20px,6vw,120px);
+    }
+    .dest-hero-badge {
+      display: inline-block; background: var(--orange); color: #fff;
+      font-family: 'Montserrat', sans-serif; font-size: clamp(9px, .8vw, 11px);
+      font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+      padding: 5px 16px; border-radius: 50px; margin-bottom: 16px;
+    }
+    .dest-hero-content h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(32px, 4vw, 52px); font-weight: 800; line-height: 1.2; text-shadow: 0 2px 12px rgba(0,0,0,.4);
+    }
+    .dest-hero-content p { font-size: clamp(13px, 1.2vw, 16px); margin-top: 12px; opacity: .88; font-style: italic; }
+
+    /* ══ SECTION HEADER ══ */
+    .section-header { text-align: center; padding: clamp(20px,3vw,40px) clamp(16px,4vw,60px) clamp(12px,2vw,24px); }
+    .section-icon { font-size: clamp(26px,3vw,38px); margin-bottom: 8px; }
+    .section-header h2 {
+      font-family: 'Montserrat', sans-serif; font-size: clamp(16px,2.2vw,26px); font-weight: 800;
+      letter-spacing: 2px; text-transform: uppercase;
+    }
+    .section-header p { font-size: clamp(12px,1.1vw,15px); color: var(--text-gray); margin-top: 8px; line-height: 1.6; }
+
+    /* ══ SECTIONS ══ */
+    .dest-section { background: var(--bg-gray); padding-bottom: clamp(40px, 6vw, 72px); }
+    .dest-section.alt { background: #fff; }
+
+    /* ══ CARD GRID ══ */
+    .dest-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: clamp(16px, 2vw, 28px); padding: 0 clamp(16px,4vw,60px);
+    }
+    @media (max-width: 960px) { .dest-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .dest-grid { grid-template-columns: 1fr; } }
+
+    .dest-card {
+      background: #fff; border-radius: 16px; overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,.08);
+      display: flex; flex-direction: column;
+      transition: transform .3s ease, box-shadow .3s ease; cursor: pointer;
+    }
+    .dest-section.alt .dest-card { background: #f9f9f9; }
+    .dest-card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(0,0,0,.16); }
+
+    .dest-card-img { position: relative; width: 100%; aspect-ratio: 16/9; overflow: hidden; flex-shrink: 0; }
+    .dest-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s ease; }
+    .dest-card:hover .dest-card-img img { transform: scale(1.06); }
+    .dest-card-overlay {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(to top, rgba(0,0,0,.72) 0%, transparent 100%);
+      padding: 34px 16px 14px;
+      display: flex; align-items: flex-end; justify-content: space-between;
+    }
+    .dest-card-name {
+      font-family: 'Montserrat', sans-serif; font-size: clamp(17px,1.8vw,22px);
+      font-weight: 800; color: #fff; letter-spacing: 1.5px; text-shadow: 0 2px 8px rgba(0,0,0,.5);
+    }
+    .dest-card-tag {
+      background: var(--orange); color: #fff;
+      font-family: 'Montserrat', sans-serif; font-size: clamp(9px,.75vw,10px);
+      font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 4px 10px; border-radius: 50px; white-space: nowrap; flex-shrink: 0;
+    }
+    .dest-card-body { padding: clamp(14px,1.5vw,20px); flex: 1; display: flex; flex-direction: column; gap: 8px; }
+    .dest-card-meta { display: flex; gap: 14px; flex-wrap: wrap; }
+    .dest-meta-item {
+      display: flex; align-items: center; gap: 5px;
+      font-size: clamp(11px,.85vw,12px); color: var(--text-gray);
+      font-family: 'Montserrat', sans-serif; font-weight: 600;
+    }
+    .dest-card-desc { font-size: clamp(11px,.9vw,13px); color: #555; line-height: 1.6; flex: 1; }
+    .dest-card-footer {
+      padding: clamp(12px,1.2vw,16px); border-top: 1px solid #f0f0f0;
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    }
+    .dest-price { display: flex; flex-direction: column; }
+    .dest-price-label { font-size: clamp(9px,.75vw,10px); color: #999; font-family: 'Montserrat',sans-serif; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+    .dest-price-val { font-family: 'Montserrat',sans-serif; font-size: clamp(14px,1.3vw,18px); font-weight: 800; color: var(--blue); }
+    .btn-view {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: clamp(8px,1vw,11px) clamp(16px,1.8vw,24px);
+      background: var(--blue); color: #fff;
+      font-family: 'Montserrat', sans-serif; font-size: clamp(10px,.85vw,12px);
+      font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+      border-radius: 6px; border: none; cursor: pointer;
+      white-space: nowrap; transition: background .2s, transform .15s; flex-shrink: 0;
+    }
+    .btn-view:hover { background: #00459a; transform: translateY(-1px); }
+
+    /* ══ DESTINATION DETAIL OVERLAY ══ */
+    .detail-overlay {
+      position: fixed; inset: 0; z-index: 500;
+      background: #f0f2f5;
+      opacity: 0; pointer-events: none;
+      transition: opacity .3s ease; overflow-y: auto;
+    }
+    .detail-overlay.open { opacity: 1; pointer-events: all; }
+
+    /* ── Cover: 70% of original (was clamp(220px,40vw,480px)) ── */
+    .detail-cover {
+      position: relative; width: 100%; height: clamp(154px, 28vw, 300px); overflow: hidden;
+    }
+    .detail-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .detail-cover-overlay {
+      position: absolute; inset: 0;
+            background: rgba(0, 0, 0, 0.63);
+    }
+    .detail-cover-back {
+      position: absolute; top: 16px; left: clamp(16px,4vw,48px); z-index: 2;
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,.18); backdrop-filter: blur(6px);
+      color: #fff;
+      font-family: 'Montserrat', sans-serif; font-size: clamp(10px,.85vw,12px); font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase; padding: 7px 16px; border-radius: 50px;
+      cursor: pointer; transition: background .2s; border: none;
+    }
+    .detail-cover-back:hover { background: rgba(255,255,255,.32); }
+    .detail-cover-title {
+      position: absolute; bottom: clamp(16px,3vw,46px); left: 0; right: 0;
+      text-align: center; z-index: 2; padding: 0 20px;
+    }
+    .detail-cover-title h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(22px,3.8vw,46px); font-weight: 800;
+      color: #fff; letter-spacing: 3px; text-transform: uppercase;
+      text-shadow: 0 4px 28px rgba(0,0,0,.55);
+    }
+    .detail-cover-sub {
+      font-size: clamp(12px,1vw,14px); color: rgba(255,255,255,.85);
+      margin-top: 6px; font-style: italic; letter-spacing: 1px;
+    }
+
+    .detail-content {
+      max-width: 1160px; margin: 0 auto;
+      padding: clamp(24px,3.5vw,44px) clamp(16px,4vw,60px);
+    }
+    /* Swapped: details left, portrait image right */
+    .detail-cols {
+      display: grid; grid-template-columns: 1fr 320px;
+      gap: clamp(24px,3vw,52px); align-items: start;
+    }
+    @media (max-width: 860px) { .detail-cols { grid-template-columns: 1fr; } }
+
+    /* Right: portrait image (order 2 on desktop, order 1 on mobile) */
+    .detail-img-col {
+      position: sticky;
+      top: 20px;
+      order: 2;
+      display: flex; flex-direction: column; align-items: stretch; gap: 16px;
+      /* Ensure it stays within the overlay scroll container */
+      align-self: start;
+    }
+    @media (max-width: 860px) { .detail-img-col { order: -1; position: static; } }
+
+    .detail-pkg-img {
+      width: 100%; border-radius: 18px; overflow: hidden;
+      box-shadow: 0 12px 48px rgba(0,0,0,.18); aspect-ratio: 3/4;
+      cursor: zoom-in; transition: box-shadow .25s;
+    }
+    .detail-pkg-img:hover { box-shadow: 0 20px 60px rgba(0,0,0,.28); }
+    .detail-pkg-img img { width: 100%; height: 100%; object-fit: cover;   display: block; transition: transform .4s ease; }
+    .detail-pkg-img:hover img { transform: scale(1.03); }
+
+    /* Standalone Book Now button below image */
+    .btn-book-now {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%;
+      padding: clamp(12px,1.3vw,15px) 0;
+      background: var(--orange); color: #fff;
+      font-family: 'Montserrat', sans-serif; font-size: clamp(11px,.9vw,13px);
+      font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+      border-radius: 10px; border: none; cursor: pointer;
+      transition: background .2s, transform .15s;
+    }
+    .btn-book-now:hover { background: #e0941a; transform: translateY(-2px); }
+
+    /* Left: description (order 1) */
+    .detail-desc-col { order: 1; }
+
+    .detail-section-label {
+      font-family: 'Montserrat', sans-serif; font-size: clamp(9px,.75vw,11px); font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase; color: var(--blue); margin-bottom: 10px;
+    }
+    .detail-title {
+      font-family: 'Montserrat', sans-serif; font-size: clamp(20px,2.3vw,30px); font-weight: 800;
+      color: #1b3a5c; line-height: 1.3; margin-bottom: 18px;
+    }
+    .detail-desc p { font-size: clamp(13px,1vw,15px); color: #555; line-height: 1.85; margin-bottom: 14px; }
+
+    /* ── Image lightbox ── */
+    .img-lightbox {
+      position: fixed; inset: 0; z-index: 700;
+      background: rgba(0,0,0,.92);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity .25s ease;
+      padding: 20px;
+    }
+    .img-lightbox.open { opacity: 1; pointer-events: all; }
+    .img-lightbox img {
+      max-width: 90vw; max-height: 90vh;
+      border-radius: 12px; box-shadow: 0 24px 80px rgba(0,0,0,.6);
+      transform: scale(.94); transition: transform .3s ease;
+      object-fit: contain;
+    }
+    .img-lightbox.open img { transform: scale(1); }
+    .lightbox-close {
+      position: absolute; top: 20px; right: 24px;
+      width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(255,255,255,.15); border: none; color: #fff;
+      font-size: 20px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s;
+    }
+    .lightbox-close:hover { background: rgba(255,255,255,.3); }
+
+    .detail-box {
+      margin-top: 20px; background: #fff; border-radius: 14px; padding: 22px 24px;
+      box-shadow: 0 2px 14px rgba(0,0,0,.06);
+    }
+    .detail-box-title {
+      font-family: 'Montserrat', sans-serif; font-size: clamp(11px,.9vw,13px); font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase; color: #1b3a5c; margin-bottom: 14px;
+    }
+    .two-col-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 20px; }
+    @media (max-width: 480px) { .two-col-list { grid-template-columns: 1fr; } }
+    .check-item {
+      display: flex; align-items: flex-start; gap: 8px;
+      font-size: clamp(12px,.9vw,13px); color: #444; line-height: 1.55;
+    }
+    .check-item::before { content: '✓'; color: var(--blue); font-weight: 700; font-size: 12px; flex-shrink: 0; margin-top: 1px; }
+    .x-item {
+      display: flex; align-items: flex-start; gap: 8px;
+      font-size: clamp(12px,.9vw,13px); color: #666; line-height: 1.55;
+    }
+    .x-item::before { content: '✕'; color: #c0392b; font-weight: 700; font-size: 11px; flex-shrink: 0; margin-top: 2px; }
+
+    .incl-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .incl-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: #eef4ff; color: var(--blue);
+      font-family: 'Montserrat', sans-serif; font-size: clamp(10px,.8vw,11px); font-weight: 700;
+      letter-spacing: .5px; padding: 6px 14px; border-radius: 50px; border: 1px solid #c8dcff;
+    }
+    .excl-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: #fff2f2; color: #b03030;
+      font-family: 'Montserrat', sans-serif; font-size: clamp(10px,.8vw,11px); font-weight: 700;
+      letter-spacing: .5px; padding: 6px 14px; border-radius: 50px; border: 1px solid #f5c6c6;
+    }
+
+    /* ══ BOOKING POPUP ══ */
+    .booking-popup-bg {
+      position: fixed; inset: 0; z-index: 600;
+      background: rgba(0,0,0,.55); backdrop-filter: blur(4px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity .25s ease; padding: 16px;
+    }
+    .booking-popup-bg.open { opacity: 1; pointer-events: all; }
+    .booking-popup {
+      background: #fff; border-radius: 20px; width: 100%; max-width: 560px;
+      box-shadow: 0 24px 80px rgba(0,0,0,.22);
+      transform: scale(.95) translateY(16px); transition: transform .3s ease; overflow: hidden;
+      max-height: 90vh; overflow-y: auto;
+    }
+    .booking-popup-bg.open .booking-popup { transform: scale(1) translateY(0); }
+    .booking-popup-head {
+      background: linear-gradient(135deg, var(--blue) 0%, #003d7a 100%);
+      padding: 22px 28px; color: #fff; position: relative;
+    }
+    .booking-popup-head h3 { font-family: 'Montserrat', sans-serif; font-size: clamp(16px,1.5vw,20px); font-weight: 800; }
+    .booking-popup-head p { font-size: 13px; opacity: .8; margin-top: 4px; }
+    .booking-popup-close {
+      position: absolute; top: 16px; right: 18px; width: 30px; height: 30px; border-radius: 50%;
+      background: rgba(255,255,255,.18); border: none; color: #fff; font-size: 15px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .2s;
+    }
+    .booking-popup-close:hover { background: rgba(255,255,255,.32); }
+    .booking-popup-body { padding: 24px 28px; }
+    .bfrow { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+    .bfrow.full { grid-template-columns: 1fr; }
+    .bfg { display: flex; flex-direction: column; gap: 5px; }
+    .bfg label { font-family: 'Montserrat', sans-serif; font-size: clamp(9px,.75vw,11px); font-weight: 700; letter-spacing: .5px; text-transform: uppercase; color: #555; }
+    .bfg label span { color: var(--orange); }
+    .bfg input, .bfg select, .bfg textarea {
+      border: 1.5px solid #e0e5ec; border-radius: 8px; padding: 10px 13px;
+      font-size: clamp(12px,.95vw,14px); color: var(--text-dark);
+      font-family: 'Open Sans', sans-serif; outline: none; transition: border-color .2s; background: #fafbfc;
+    }
+    .bfg input:focus, .bfg select:focus, .bfg textarea:focus { border-color: var(--blue); background: #fff; }
+    .bfg textarea { resize: vertical; min-height: 72px; }
+    .booking-popup-footer { padding: 0 28px 24px; display: flex; justify-content: flex-end; gap: 12px; }
+    .btn-cancel {
+      padding: 11px 24px; background: #f0f2f5; color: #666;
+      font-family: 'Montserrat', sans-serif; font-size: clamp(10px,.85vw,12px); font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase; border-radius: 8px; border: none; cursor: pointer; transition: background .2s;
+    }
+    .btn-cancel:hover { background: #e2e5eb; }
+    .btn-submit-booking {
+      padding: 11px 28px; background: var(--orange); color: #fff;
+      font-family: 'Montserrat', sans-serif; font-size: clamp(10px,.85vw,12px); font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase; border-radius: 8px; border: none;
+      cursor: pointer; transition: background .2s, transform .15s;
+    }
+    .btn-submit-booking:hover { background: #e0941a; transform: translateY(-1px); }
+    .booking-success { display: none; flex-direction: column; align-items: center; padding: 40px 28px; text-align: center; }
+    .booking-success.show { display: flex; }
+    .booking-success-icon {
+      width: 72px; height: 72px; border-radius: 50%; background: #eafaf1;
+      display: flex; align-items: center; justify-content: center; font-size: 36px; margin-bottom: 18px;
+      animation: pop-in .4s cubic-bezier(.36,.07,.19,.97);
+    }
+    @keyframes pop-in { 0%{transform:scale(.5);opacity:0} 80%{transform:scale(1.1)} 100%{transform:scale(1);opacity:1} }
+    .booking-success h3 { font-family: 'Montserrat', sans-serif; font-size: clamp(18px,2vw,24px); font-weight: 800; color: #1b3a5c; margin-bottom: 10px; }
+    .booking-success p { font-size: 14px; color: #666; line-height: 1.65; max-width: 360px; margin: 0 auto 22px; }
+
+    /* ══ CTA ══ */
+    .dest-cta {
+      background: linear-gradient(135deg, var(--blue) 0%, #003d7a 100%);
+      padding: clamp(32px,5vw,64px) clamp(16px,4vw,60px); text-align: center; color: #fff;
+    }
+    .dest-cta h2 { font-family: 'Montserrat', sans-serif; font-size: clamp(20px,2.5vw,32px); font-weight: 800; letter-spacing: 1px; }
+    .dest-cta p { font-size: clamp(13px,1vw,15px); opacity: .85; margin-top: 10px; line-height: 1.6; }
+    .dest-cta .btn-cta {
+      display: inline-block; margin-top: 22px;
+      padding: clamp(11px,1.2vw,14px) clamp(28px,4vw,52px);
+      background: var(--orange); color: #fff;
+      font-family: 'Montserrat', sans-serif; font-size: clamp(11px,1vw,14px);
+      font-weight: 700; letter-spacing: 1.5px; border-radius: 5px;
+      text-decoration: none; border: none; cursor: pointer; transition: background .2s, transform .15s;
+    }
+    .dest-cta .btn-cta:hover { background: #e0941a; transform: translateY(-1px); }
+
+    /* ══ REVEAL ══ */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.is-visible { opacity: 1; transform: translateY(0); }
+    .stagger-children > * { opacity: 0; transform: translateY(28px); transition: opacity .5s ease, transform .5s ease; }
+    .stagger-children.is-visible > *:nth-child(1){opacity:1;transform:translateY(0);transition-delay:.05s}
+    .stagger-children.is-visible > *:nth-child(2){opacity:1;transform:translateY(0);transition-delay:.12s}
+    .stagger-children.is-visible > *:nth-child(3){opacity:1;transform:translateY(0);transition-delay:.19s}
+    .stagger-children.is-visible > *:nth-child(4){opacity:1;transform:translateY(0);transition-delay:.26s}
+    .stagger-children.is-visible > *:nth-child(5){opacity:1;transform:translateY(0);transition-delay:.33s}
+    .stagger-children.is-visible > *:nth-child(6){opacity:1;transform:translateY(0);transition-delay:.40s}
+
+    /* ══ FOOTER ══ */
+    footer { background: #0c111d; color: #9aa5b4; position: relative; overflow: hidden; }
+    footer::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background: linear-gradient(to right, transparent, rgba(0,87,168,0.6), rgba(245,166,35,0.4), transparent); }
+    .footer-top { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr 1.1fr; gap: clamp(20px,3.5vw,60px); align-items: start; padding: clamp(10px,3vw,50px) clamp(24px,5vw,80px) clamp(22px,4vw,36px); }
+    .footer-brand-name { font-family:'Montserrat',sans-serif; font-size:clamp(16px,1.6vw,20px); font-weight:800; color:#fff; letter-spacing:1px; margin-bottom:10px; }
+    .footer-brand-desc { font-size:clamp(11px,0.9vw,13px); color:#6b7280; line-height:1.75; margin-bottom:22px; max-width:230px; }
+    .social-row { display:flex; gap:10px; }
+    .social-btn { width:36px; height:36px; border-radius:8px; background:#1c2333; border:1px solid #2d3748; display:flex; align-items:center; justify-content:center; color:#6b7280; font-size:14px; text-decoration:none; font-family:'Montserrat',sans-serif; font-weight:700; transition:background .2s,color .2s,border-color .2s; }
+    .social-btn:hover { background:var(--blue); color:#fff; border-color:var(--blue); }
+    .footer-col h4 { font-family:'Montserrat',sans-serif; font-size:clamp(9px,0.8vw,11px); font-weight:700; color:#fff; letter-spacing:2px; text-transform:uppercase; margin-bottom:clamp(14px,1.4vw,20px); position:relative; padding-bottom:10px; }
+    .footer-col h4::after { content:''; position:absolute; left:0; bottom:0; width:20px; height:2px; background:var(--orange); border-radius:2px; }
+    .footer-col ul { list-style:none; }
+    .footer-col ul li { margin-bottom:clamp(8px,0.8vw,12px); }
+    .footer-col ul li a, .footer-col ul li span { font-size:clamp(11px,0.9vw,13px); color:#6b7280; text-decoration:none; transition:color .2s; display:flex; align-items:flex-start; gap:8px; line-height:1.5; }
+    .footer-col ul li a:hover { color:#fff; }
+    .footer-col p { font-size:clamp(11px,0.9vw,13px); color:#6b7280; line-height:1.75; }
+    .payment-badges { display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
+    .pay-badge { background:#1c2333; border:1px solid #2d3748; border-radius:6px; padding:5px 11px; font-family:'Montserrat',sans-serif; font-size:clamp(9px,0.75vw,11px); font-weight:700; color:#6b7280; letter-spacing:0.5px; }
+    .footer-bottom { border-top:1px solid #1c2333; padding:clamp(16px,2vw,22px) clamp(24px,5vw,80px); display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+    .footer-bottom-copy { font-size:clamp(10px,0.85vw,12px); color:#4b5563; font-family:'Montserrat',sans-serif; font-weight:600; }
+    .footer-bottom-links { display:flex; gap:clamp(16px,2vw,28px); }
+    .footer-bottom-links a { font-size:clamp(10px,0.85vw,12px); color:#4b5563; text-decoration:none; transition:color .2s; font-family:'Montserrat',sans-serif; font-weight:600; }
+    .footer-bottom-links a:hover { color:#fff; }
+
+    @media (max-width: 768px) {
+      nav ul { display: none; }
+      .hamburger { display: flex; }
+      .footer-top { grid-template-columns: repeat(2,1fr); }
+      .footer-logo { grid-column: 1 / -1; }
+    }
+
+    @media (max-width:600px) {
+      .hamburger{display:flex} nav ul{display:none}
+      .footer-top{grid-template-columns:1fr 1fr}
+      .bfrow{grid-template-columns:1fr}
+
+      /* Booking popup: full width, scrollable */
+      .booking-popup { max-width: 100%; border-radius: 16px; }
+      .booking-popup-footer { flex-wrap: wrap; }
+      .btn-cancel, .btn-submit-booking { flex: 1; text-align: center; }
+
+      /* Detail overlay cover title positioning fix */
+      .detail-cover-title { bottom: 16px; }
+      .detail-cover-title h2 { font-size: clamp(20px,6vw,32px); letter-spacing: 1px; }
+
+      /* Dest card footer stack */
+      .dest-card-footer { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .btn-view { width: 100%; justify-content: center; }
+    }
+    @media (max-width:480px){
+      .footer-top{grid-template-columns:1fr; gap:20px;}
+      .footer-logo { grid-column: unset; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .footer-bottom-links { flex-wrap: wrap; gap: 12px; }
+      .dest-hero-content h1 { font-size: clamp(26px,8vw,36px); }
+      .detail-cover-sub { font-size: 13px; }
+    }
+    @media (max-width:400px){.footer-top{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+
+<div id="read-progress"></div>
+
+<!-- ══ NAVBAR ══ -->
+<nav id="mainNav">
+  <a class="logo" href="index.html">
+    <img src="LOGO.svg" alt="Hilway Travels"/>
+  </a>
+
+  <ul id="nav-links">
+    <li><a href="index.html" >HOME</a></li>
+    <li><a href="destinations.html"  class="active">DESTINATION</a></li>
+    <li><a href="visa-assistance.html">VISA ASSISTANCE</a></li>
+    <li><a href="flights.html">FLIGHTS BOOKINGS</a></li>
+    <li><a href="about.html">ABOUT US</a></li>
+    <li><a href="contact.html">CONTACT US</a></li>
+  </ul>
+
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</nav>
+
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html">HOME</a>
+  <a href="destinations.html">DESTINATION</a>
+  <a href="visa-assistance.html">VISA ASSISTANCE</a>
+  <a href="flights.html">FLIGHTS BOOKINGS</a>
+  <a href="about.html">ABOUT US</a>
+  <a href="contact.html">CONTACT US</a>
+</div>
+<!-- HERO -->
+<section class="dest-hero">
+  <img class="hero-bg-img" src="Resources/Destinations/Siargao.webp" alt="Destinations" loading="eager"/>
+  <div class="dest-hero-overlay"></div>
+  <div class="dest-hero-content reveal">
+    <div class="dest-hero-badge">Explore the World</div>
+    <h1>DESTINATIONS</h1>
+    <p>Handpicked tours crafted for every kind of traveler — from island escapes to world landmarks.</p>
+  </div>
+</section>
+
+<!-- ══ DOMESTIC ══ -->
+<section class="dest-section" id="domestic">
+  <div class="section-header reveal">
+    <div class="section-icon">🏝️</div>
+    <h2>Domestic Destinations</h2>
+    <p>Discover the breathtaking beauty of the Philippines — crystal beaches, highland escapes, and vibrant culture await.</p>
+  </div>
+
+  <div class="dest-grid stagger-children">
+
+    <!-- BUKIDNON -->
+    <div class="dest-card" onclick="openDetail('bukidnon')">
+      <div class="dest-card-img">
+        <img src="Resources/Destinations/Bukidnon.webp" alt="Bukidnon" loading="lazy"/>
+        <div class="dest-card-overlay">
+          <span class="dest-card-name">Bukidnon</span>
+          <span class="dest-card-tag">Domestic</span>
+        </div>
+      </div>
+      <div class="dest-card-body">
+        <div class="dest-card-meta">
+          <span class="dest-meta-item">🗓️ 4D / 3N</span>
+          <span class="dest-meta-item">👫 Couples &amp; Nature Lovers</span>
+        </div>
+        <p class="dest-card-desc">A romantic highland escape with glamping at Taglucop Strawberry Hills, scenic RotyPeaks, Communal Ranch, Lake Apo, and the Monastery of Transfiguration.</p>
+      </div>
+      <div class="dest-card-footer">
+        <div class="dest-price">
+
+        </div>
+        <button class="btn-view">View Package →</button>
+      </div>
+    </div>
+
+    <!-- CEBU & BOHOL -->
+    <div class="dest-card" onclick="openDetail('cebu')">
+      <div class="dest-card-img">
+        <img src="Resources/Destinations/Cebu.webp" alt="Cebu and Bohol" loading="lazy"/>
+        <div class="dest-card-overlay">
+          <span class="dest-card-name">Cebu &amp; Bohol</span>
+          <span class="dest-card-tag">Domestic</span>
+        </div>
+      </div>
+      <div class="dest-card-body">
+        <div class="dest-card-meta">
+          <span class="dest-meta-item">🗓️ 7D / 6N</span>
+          <span class="dest-meta-item">🌊 Adventure &amp; Sightseeing</span>
+        </div>
+        <p class="dest-card-desc">Kawasan Falls canyoneering, Oslob whale sharks, Chocolate Hills, Tarsier Sanctuary, and Seven Seas — the best of two iconic islands in one trip.</p>
+      </div>
+      <div class="dest-card-footer">
+        <div class="dest-price">
+        </div>
+        <button class="btn-view">View Package →</button>
+      </div>
+    </div>
+
+    <!-- SIARGAO -->
+    <div class="dest-card" onclick="openDetail('siargao')">
+      <div class="dest-card-img">
+        <img src="Resources/Destinations/Siargao.webp" alt="Siargao" loading="lazy"/>
+        <div class="dest-card-overlay">
+          <span class="dest-card-name">Siargao</span>
+          <span class="dest-card-tag">Domestic</span>
+        </div>
+      </div>
+      <div class="dest-card-body">
+        <div class="dest-card-meta">
+          <span class="dest-meta-item">🗓️ 3D / 2N</span>
+          <span class="dest-meta-item">👥 Group of 4</span>
+        </div>
+        <p class="dest-card-desc">Island-hopping to Naked Island, Daku, and Guyam, land tours to Cloud 9 and Magpupungko Rock Pools — pure island bliss for small squads.</p>
+      </div>
+      <div class="dest-card-footer">
+        <div class="dest-price">
+        </div>
+        <button class="btn-view">View Package →</button>
+      </div>
+    </div>
+
+    <!-- LA UNION -->
+    <div class="dest-card" onclick="openDetail('launion')">
+      <div class="dest-card-img">
+        <img src="Resources/Destinations/La-Union.avif" alt="La Union" loading="lazy"/>
+        <div class="dest-card-overlay">
+          <span class="dest-card-name">La Union</span>
+          <span class="dest-card-tag">Domestic</span>
+        </div>
+      </div>
+      <div class="dest-card-body">
+        <div class="dest-card-meta">
+          <span class="dest-meta-item">🗓️ 3D / 2N</span>
+          <span class="dest-meta-item">🏄 Beach &amp; Surf Vibes</span>
+        </div>
+        <p class="dest-card-desc">Surf lessons, pottery making, Nalvo Pebble Beach, Bahay na Bato, and the iconic Bato de Luna landmark — a full coastal escape for everyone.</p>
+      </div>
+      <div class="dest-card-footer">
+        <div class="dest-price">
+        </div>
+        <button class="btn-view">View Package →</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ INTERNATIONAL ══ -->
+<section class="dest-section alt" id="international">
+  <div class="section-header reveal">
+    <div class="section-icon">✈️</div>
+    <h2>International Destinations</h2>
+    <p>From Asia's vibrant cities to the world's most iconic landmarks — expertly curated international tours await.</p>
+  </div>
+
+  <div class="dest-grid stagger-children">
+
+    <!-- SINGAPORE -->
+    <div class="dest-card" onclick="openDetail('singapore')">
+      <div class="dest-card-img">
+        <img src="Resources/Destinations/Singapore.jpg" alt="Singapore" loading="lazy"/>
+        <div class="dest-card-overlay">
+          <span class="dest-card-name">Singapore</span>
+          <span class="dest-card-tag">International</span>
+        </div>
+      </div>
+      <div class="dest-card-body">
+        <div class="dest-card-meta">
+          <span class="dest-meta-item">🗓️ 5D / 4N</span>
+          <span class="dest-meta-item">🦁 4-Star Hotel</span>
+        </div>
+        <p class="dest-card-desc">Merlion Park, Gardens by the Bay, Jewel Changi Airport, and Marina Bay Sands — the Lion City's best attractions with a professional tour guide.</p>
+      </div>
+      <div class="dest-card-footer">
+        <div class="dest-price">
+
+        </div>
+        <button class="btn-view">View Package →</button>
+      </div>
+    </div>
+
+    <!-- JAPAN TOKYO-HAKONE -->
+    <div class="dest-card" onclick="openDetail('japantokyo')">
+      <div class="dest-card-img">
+        <img src="Resources/Destinations//Tokyo.webp" alt="Japan Tokyo Hakone" loading="lazy"/>
+        <div class="dest-card-overlay">
+          <span class="dest-card-name">Japan · Tokyo–Hakone</span>
+          <span class="dest-card-tag">International</span>
+        </div>
+      </div>
+      <div class="dest-card-body">
+        <div class="dest-card-meta">
+          <span class="dest-meta-item">🗓️ 5D / 4N</span>
+          <span class="dest-meta-item">🌸 PAL Airfare Included</span>
+        </div>
+        <p class="dest-card-desc">Shibuya Crossing, Meiji Jingu, Hakone Shrine, Ropeway, Pirate Ship cruise, Shibuya Sky, and a full day at Tokyo DisneySea — plus unlimited WiFi.</p>
+      </div>
+      <div class="dest-card-footer">
+        <div class="dest-price">
+
+        </div>
+        <button class="btn-view">View Package →</button>
+      </div>
+    </div>
+
+    <!-- JAPAN OSAKA-KYOTO -->
+    <div class="dest-card" onclick="openDetail('japanosaka')">
+      <div class="dest-card-img">
+        <img src="Resources/Destinations/Osaka.jpg" alt="Japan Osaka Kyoto" loading="lazy"/>
+        <div class="dest-card-overlay">
+          <span class="dest-card-name">Japan · Osaka–Kyoto</span>
+          <span class="dest-card-tag">International</span>
+        </div>
+      </div>
+      <div class="dest-card-body">
+        <div class="dest-card-meta">
+          <span class="dest-meta-item">🗓️ 5D / 4N</span>
+          <span class="dest-meta-item">🏯 Culture &amp; Scenery</span>
+        </div>
+        <p class="dest-card-desc">Ancient temples of Kyoto, the vibrant Dotonbori streets of Osaka, autumn landscapes, guided tours, pocket WiFi, and airfare all included.</p>
+      </div>
+      <div class="dest-card-footer">
+        <div class="dest-price">  
+        </div>
+        <button class="btn-view">View Package →</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="dest-cta reveal">
+  <h2>Can't Find Your Dream Destination?</h2>
+  <p>We customize tours virtually anywhere in the world. Reach out and let us plan your perfect trip.</p>
+  <a href="contact.html" class="btn-cta">Contact Us Today →</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+
+    <!-- Brand -->
+    <div class="footer-col footer-logo">
+   <img src="LOGO.svg" alt="Hilway Travels" style="height:100px;width:auto;display:block;filter:brightness(0) invert(1);">
+      <div class="footer-brand-desc">Inspired by the Aklanon/Hiligaynon word "Hilway," we aim to make every journey feel easy, well-organized, and worry-free.</div>
+      <div class="social-row">
+        <a class="social-btn" href="#" aria-label="Facebook">f</a>
+        <a class="social-btn" href="#" aria-label="Instagram">in</a>
+        <a class="social-btn" href="#" aria-label="X">𝕏</a>
+        <a class="social-btn" href="#" aria-label="TikTok">ꚠ</a>
+      </div>
+    </div>
+
+    <!-- Contact -->
+    <div class="footer-col">
+      <h4>Contact Us</h4>
+      <ul>
+        <li><span><span class="footer-contact-icon">📍</span>Kalibo, Aklan, Philippines</span></li>
+        <li><span><span class="footer-contact-icon">📞</span>+63 939 151 0082</span></li>
+        <li><span><span class="footer-contact-icon">✉️</span>hilwaytravels.ph</span></li>
+        <li><span><span class="footer-contact-icon">🌐</span>www.hilway.com</span></li>
+      </ul>
+    </div>
+
+    <!-- Navigation -->
+    <div class="footer-col">
+      <h4>Explore</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#">Destinations</a></li>
+        <li><a href="#">Visa Assistance</a></li>
+        <li><a href="#">Tour Packages</a></li>
+        <li><a href="#">Other Services</a></li>
+        <li><a href="about.html">About Us</a></li>
+      </ul>
+    </div>
+
+    <!-- Company -->
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">Blogs &amp; News</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="about.html">Our Team</a></li>
+        <li><a href="#">Press</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </div>
+
+    <!-- Safe Payment -->
+    <div class="footer-col">
+      <h4>Safe Payment</h4>
+      <p style="margin-bottom:14px;">Payments are encrypted and transferred securely with SSL protocol.</p>
+      <div class="payment-badges">
+        <span class="pay-badge">💳 Visa</span>
+        <span class="pay-badge">💳 Mastercard</span>
+        <span class="pay-badge">📱 GCash</span>
+        <span class="pay-badge">🏦 Bank Transfer</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <span class="footer-bottom-copy">© 2026 HILWAY TRAVELS. All Rights Reserved.</span>
+    <div class="footer-bottom-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Cookie Settings</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ══ DETAIL OVERLAY ══ -->
+<div class="detail-overlay" id="detailOverlay">
+  <div class="detail-cover">
+    <img id="detailCoverImg" src="" alt=""/>
+    <div class="detail-cover-overlay"></div>
+    <button class="detail-cover-back" onclick="closeDetail()">← Back to Destinations</button>
+    <div class="detail-cover-title">
+      <h2 id="detailName"></h2>
+      <div class="detail-cover-sub" id="detailSub"></div>
+    </div>
+  </div>
+
+  <div class="detail-content">
+    <div class="detail-cols">
+
+      <!-- LEFT: description & details -->
+      <div class="detail-desc-col">
+        <div class="detail-section-label" id="detailType"></div>
+        <div class="detail-title" id="detailTitle"></div>
+        <div class="detail-desc" id="detailDesc"></div>
+
+        <div class="detail-box" id="inclBox">
+          <div class="detail-box-title">✅ Package Inclusions</div>
+          <div class="incl-list" id="detailInclusions"></div>
+        </div>
+
+        <div class="detail-box" style="margin-top:16px;" id="exclBox">
+          <div class="detail-box-title">❌ Not Included</div>
+          <div class="incl-list" id="detailExclusions"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT: portrait tour package image + Book Now -->
+      <div class="detail-img-col">
+        <div class="detail-pkg-img" onclick="openLightbox()" title="Click to view full image">
+          <img id="detailPkgImg" src="" alt="Tour Package"/>
+        </div>
+        <button class="btn-book-now" onclick="openBooking()">Book Now ✈️</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══ IMAGE LIGHTBOX ══ -->
+<div class="img-lightbox" id="imgLightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightboxImg" src="" alt="Tour Package Full View"/>
+</div>
+
+<!-- ══ BOOKING POPUP ══ -->
+<div class="booking-popup-bg" id="bookingPopupBg">
+  <div class="booking-popup">
+    <div class="booking-popup-head">
+      <h3>Book Your Tour</h3>
+      <p id="bookingPopupSub">Fill in your details and we'll get back to you shortly.</p>
+      <button class="booking-popup-close" onclick="closeBooking()">✕</button>
+    </div>
+    <div id="bookingFormWrap">
+      <div class="booking-popup-body">
+        <!-- Package (read-only, auto-filled) -->
+        <div class="bfrow full">
+          <div class="bfg">
+            <label>Package</label>
+            <input type="text" id="bPackage" readonly style="background:#f0f4ff;color:var(--blue);font-weight:700;cursor:default;"/>
+          </div>
+        </div>
+        <div class="bfrow">
+          <div class="bfg"><label>First Name <span>*</span></label><input type="text" id="bFirstName" placeholder="e.g. Maria"/></div>
+          <div class="bfg"><label>Last Name <span>*</span></label><input type="text" id="bLastName" placeholder="e.g. Santos"/></div>
+        </div>
+        <div class="bfrow">
+          <div class="bfg"><label>Email Address <span>*</span></label><input type="email" id="bEmail" placeholder="yourname@email.com"/></div>
+          <div class="bfg"><label>Phone Number <span>*</span></label><input type="tel" id="bPhone" placeholder="+63 9XX XXX XXXX"/></div>
+        </div>
+        <div class="bfrow">
+          <div class="bfg"><label>Travel Date <span>*</span></label><input type="date" id="bDate"/></div>
+          <div class="bfg"><label>Number of Pax <span>*</span></label>
+            <input type="text" id="bPax" readonly style="background:#f0f4ff;color:var(--blue);font-weight:700;cursor:default;" placeholder="Auto-filled"/>
+          </div>
+        </div>
+        <div class="bfrow full">
+          <div class="bfg"><label>Special Requests / Notes</label><textarea id="bNotes" placeholder="Any special requirements or questions…"></textarea></div>
+        </div>
+      </div>
+      <div class="booking-popup-footer">
+        <button class="btn-cancel" onclick="closeBooking()">Cancel</button>
+        <button class="btn-submit-booking" onclick="submitBooking()">Send Inquiry ✈️</button>
+      </div>
+    </div>
+    <div class="booking-success" id="bookingSuccess">
+      <div class="booking-success-icon">✅</div>
+      <h3>Inquiry Sent!</h3>
+      <p id="bookingSuccessMsg"></p>
+      <button class="btn-book-now" onclick="closeBooking()">Done</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════
+   DESTINATION DATA
+══════════════════════════════════ */
+const destinations = {
+
+  bukidnon: {
+    name: 'Bukidnon',
+    sub: 'Highland Romance & Nature Escapes',
+    type: '🏔️ Domestic Tour Package · 4 Days / 3 Nights',
+    cover: 'Resources/Destinations/Bukidnon.webp',
+    pkg:   'Resources/Tour-Package/Bukidnon.webp',
+    price: 'Contact Us',
+    priceNote: 'Ideal for couples & nature lovers',
+    pax: 2,
+    title: 'Bukidnon Highland Experience — Strawberry Hills, RotyPeaks & More',
+    desc: `<p>Experience a romantic highland escape in this 4 Days and 3 Nights Bukidnon tour package, perfect for couples and nature lovers seeking breathtaking views and peaceful scenery.</p>
+           <p>Visit RotyPeaks, Communal Ranch, Kaamulan Park, Lake Apo, Monastery of Transfiguration, and the iconic Taglucop Strawberry Hills — a journey that balances adventure and romance with drone shots to capture every unforgettable moment.</p>`,
+    inclusions: ['Roundtrip car transfers (Davao Airport – Taglucop – Hotel Valencia – RotyPeaks)','Premium glamping at Taglucop Strawberry Hills','Standard triple room at Hotel Valencia','Cozy A-frame kubo at RotyPeaks','Daily breakfast','Travel insurance','4x4 SUV with driver & tour guide','Drone shots'],
+    exclusions: ['Airfare (Manila–Davao & CDO–Manila)','Lunch (Days 1–4) & Dinner (Days 1–3)','Entrance & environmental fees','Personal expenses']
+  },
+
+  cebu: {
+    name: 'Cebu & Bohol',
+    sub: 'Adventure, Waterfalls & Chocolate Hills',
+    type: '🌊 Domestic Tour Package · 7 Days / 6 Nights',
+      cover: 'Resources/Destinations/Cebu.webp',
+      pkg:   'Resources/Tour-Package/Cebu.webp',
+    price: 'Contact Us',
+    priceNote: 'Perfect for adventure seekers',
+    pax: 6,
+    title: 'Cebu & Bohol Explorer — Falls, Wildlife & Island Wonders',
+    desc: `<p>Explore the best of Cebu and Bohol with this exciting 7 Days and 6 Nights tour package, perfect for travelers who want to experience both adventure and sightseeing in one trip.</p>
+           <p>Swim alongside whale sharks in Oslob, plunge into the multi-tiered Kawasan Falls, marvel at the iconic Chocolate Hills, meet the world's tiniest primate at the Tarsier Sanctuary, and discover Seven Seas — all in a single seamless journey.</p>`,
+    inclusions: ['6 nights at Skyline Studio, Avida Riala Cebu IT Park','Roundtrip airport transfers','Exclusive air-conditioned van (selected pick-up & drop-off)','Local tour guide','Activity gears & equipment','Entrance, environmental & parking fees','Cebu city tour, Oslob tour & Bohol tour','Breakfast & lunch on Day 3; lunch on Day 4'],
+    exclusions: ['Airfare','Most dinners & daily meals not specified','Optional activities','Additional personal expenses']
+  },
+
+  siargao: {
+    name: 'Siargao',
+    sub: 'Surf, Island Hop & Lay Low',
+    type: '🏄 Domestic Tour Package · 3 Days / 2 Nights',
+    cover: 'Resources/Destinations/Siargao.webp',
+    pkg:   'Resources/Tour-Package/Siargao.webp',
+    price: 'Contact Us',
+    priceNote: 'Ideal for groups of 4',
+    pax: 4,
+    title: 'Siargao Island Getaway — Cloud 9, Naked Island & Rock Pools',
+    desc: `<p>Experience the laid-back charm of Siargao with this 3 Days and 2 Nights island getaway, ideal for a small group of four travelers — perfect for friends or small squads looking for adventure and relaxation.</p>
+           <p>Island-hop to Naked Island, Daku Island, and Guyam Island, then explore Cloud 9 and the scenic Magpupungko Rock Pools by land. Local tricycle rides are included so you can move freely around the island.</p>`,
+    inclusions: ['2 nights at Siargao Residency by Privacy Group','Roundtrip van airport transfers (Sayak Airport)','Island-hopping tour (Naked, Daku & Guyam Islands)','Land tour (Cloud 9 & Magpupungko Rock Pools)','Local transportation via tricycle rides'],
+    exclusions: ['Airfare to/from Siargao','All meals (freedom to explore local dining)','Entrance & environmental fees','Souvenirs & personal expenses']
+  },
+
+  launion: {
+    name: 'La Union',
+    sub: 'Good Vibes Roll In With Every Tide',
+    type: '🏖️ Domestic Tour Package · 3 Days / 2 Nights',
+    cover: 'Resources/Destinations/La-Union.avif',
+    pkg:   'Resources/Tour-Package/La-Union.webp',
+    price: 'Contact Us',
+    priceNote: 'For friends, families & couples',
+    pax: null,
+    title: 'La Union Coastal Escape — Surf, Culture & Scenic Beaches',
+    desc: `<p>Experience the perfect coastal escape with this 3 Days and 2 Nights La Union getaway, where good vibes roll in with every tide. La Union offers a refreshing mix of adventure, relaxation, scenic beaches, and cultural attractions perfect for friends, families, couples, and group travelers.</p>
+           <p>Visit Nalvo Pebble Beach, Bahay na Bato, and the iconic Bato de Luna landmark. Ride the waves with surfing lessons, channel your creativity through pottery making, and soak in the warm ocean breeze with every unforgettable moment.</p>`,
+    inclusions: ['Roundtrip van transfers','Accommodation at Rivero Transient House','Half-board meals','Guided tours','Entrance fees','Travel insurance','Surfing lessons','Pottery making activity'],
+    exclusions: ['Airfare (if applicable)','Meals not specified in the package','Optional personal expenses & extra activities']
+  },
+
+  singapore: {
+    name: 'Singapore',
+    sub: 'The Lion City — Modern, Vibrant & Iconic',
+    type: '🦁 International Tour Package · 5 Days / 4 Nights',
+    cover: 'Resources/Destinations/Singapore.jpg',
+    pkg:   'Resources/Tour-Package/Singapore.webp',
+    price: 'Contact Us',
+    priceNote: 'Includes 4-star hotel & daily breakfast',
+    pax: null,
+    title: 'Singapore City Adventure — Gardens, Merlion & Marina Bay',
+    desc: `<p>This 5 Days and 4 Nights Singapore travel package offers travelers a convenient and exciting way to experience one of Asia's most modern and vibrant destinations, with transportation, 4-star hotel accommodation, daily breakfast, and a professional tour guide all included.</p>
+           <p>Visit the famous Merlion Park, the breathtaking Gardens by the Bay, the stunning Jewel Changi Airport, and the luxurious Marina Bay Sands skyline — iconic landmarks that make Singapore one of the world's most captivating destinations.</p>`,
+    inclusions: ['Transportation throughout the trip','4-star hotel accommodation','Daily breakfast','Professional tour guide'],
+    exclusions: ['Airfare & travel taxes','Travel insurance','Lunch & dinner','Personal expenses']
+  },
+
+  japantokyo: {
+    name: 'Japan · Tokyo–Hakone',
+    sub: 'City Life Meets Scenic Mountain Landscapes',
+    type: '🌸 International Tour Package · 5 Days / 4 Nights',
+    cover: 'Resources/Destinations/Tokyo.webp',
+    pkg:   'Resources/Tour-Package/Japan-Tokyo.webp',
+    price: 'Contact Us',
+    priceNote: 'Roundtrip PAL airfare included · Group of 5',
+    pax: 5,
+    title: 'Tokyo–Hakone Adventure — DisneySea, Shibuya & Mt. Fuji Views',
+    desc: `<p>Experience the perfect mix of modern city life and breathtaking natural scenery with this 5 Days and 4 Nights Tokyo–Hakone Japan tour package, ideal for travelers seeking both adventure and relaxation.</p>
+           <p>Explore Shibuya Crossing, Meiji Jingu Shrine, Oshino Hakkai, and Hakone Shrine Torii Gate at Lake Ashi. Enjoy a Hakone Pirate Ship cruise, Ropeway roundtrip ride, Shibuya Sky panoramic views, and a full day at Tokyo DisneySea — with unlimited 4G LTE WiFi and a free power bank for the entire trip.</p>`,
+    inclusions: ['Roundtrip airfare via Philippine Airlines','Airport transfers (Keisei Skyliner & Narita Express)','4 nights at Tokyo Bay Shiomi Prince Hotel','Daily breakfast','Guided tour on Day 2 + tour coordinator assistance','Hakone Pirate Ship cruise','Hakone Ropeway roundtrip','Shibuya Sky admission','1-day Tokyo DisneySea passport','Admission tickets (covered attractions)','Travel tax & travel insurance','Unlimited 4G LTE WiFi + free power bank (5 days)'],
+    exclusions: ['Japan visa fee','Meals beyond breakfast','Personal expenses & optional activities']
+  },
+
+  japanosaka: {
+    name: 'Japan · Osaka–Kyoto',
+    sub: 'Culture, Temples & the Energy of Osaka',
+    type: '🏯 International Tour Package · 5 Days / 4 Nights',
+    cover: 'Resources/Destinations/Osaka.jpg',
+    pkg:   'Resources/Tour-Package/Japan-Osaka.webp',
+    price: 'Contact Us',
+    priceNote: 'Airfare & pocket WiFi included · Group of 5',
+    pax: 5,
+    title: 'Osaka–Kyoto Adventure — Temples, Autumn Scenery & City Nights',
+    desc: `<p>This unforgettable 5 Days and 4 Nights Osaka–Kyoto Adventure is specially designed for travelers who want to experience the perfect mix of culture, scenery, and modern city life — exploring iconic temples, breathtaking autumn landscapes, dazzling attractions, and the vibrant streets of Osaka.</p>
+           <p>Enjoy a hassle-free and budget-friendly international getaway with roundtrip airfare, comfortable hotel accommodation with breakfast, guided tours, transportation passes, selected meals, travel insurance, and unlimited pocket WiFi all included for your convenience.</p>`,
+    inclusions: ['Roundtrip airfare','Hotel accommodation with daily breakfast','Guided tours','Transportation passes','Selected meals','Travel insurance','Unlimited pocket WiFi'],
+    exclusions: ['Japan visa fee','Meals beyond those specified','Personal expenses & optional activities']
+  }
+
+};
+
+/* ══════════════════════════════════
+   DETAIL OVERLAY
+══════════════════════════════════ */
+let currentKey = '';
+
+function openDetail(key) {
+  const d = destinations[key];
+  if (!d) return;
+  currentKey = key;
+
+  document.getElementById('detailCoverImg').src = d.cover;
+  document.getElementById('detailCoverImg').alt  = d.name;
+  document.getElementById('detailName').textContent = d.name;
+  document.getElementById('detailSub').textContent  = d.sub;
+  document.getElementById('detailType').textContent  = d.type;
+  document.getElementById('detailPkgImg').src = d.pkg;
+  document.getElementById('detailTitle').textContent = d.title;
+  document.getElementById('detailDesc').innerHTML        = d.desc;
+
+  // Inclusions
+  document.getElementById('detailInclusions').innerHTML =
+    d.inclusions.map(i => `<span class="incl-chip">✓ ${i}</span>`).join('');
+
+  // Exclusions
+  document.getElementById('detailExclusions').innerHTML =
+    d.exclusions.map(i => `<span class="excl-chip">✕ ${i}</span>`).join('');
+
+  const overlay = document.getElementById('detailOverlay');
+  overlay.classList.add('open');
+  overlay.scrollTo({ top: 0 });
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDetail() {
+  document.getElementById('detailOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ══════════════════════════════════
+   BOOKING POPUP
+══════════════════════════════════ */
+function openBooking() {
+  const d = destinations[currentKey];
+  if (d) {
+    document.getElementById('bookingPopupSub').textContent = `Booking inquiry for: ${d.name}`;
+    // Auto-fill Package name
+    document.getElementById('bPackage').value = d.name + ' — ' + d.type.replace(/^[^\s]+\s/, '');
+    // Auto-fill fixed Pax
+    const paxEl = document.getElementById('bPax');
+    if (d.pax) {
+      paxEl.value = d.pax + ' pax (fixed)';
+      paxEl.style.color = 'var(--blue)';
+    } else {
+      paxEl.value = '';
+      paxEl.style.color = '';
+    }
+  }
+  document.getElementById('bookingFormWrap').style.display = '';
+  document.getElementById('bookingSuccess').classList.remove('show');
+  ['bFirstName','bLastName','bEmail','bPhone','bDate','bNotes'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  document.getElementById('bookingPopupBg').classList.add('open');
+}
+
+function closeBooking() {
+  document.getElementById('bookingPopupBg').classList.remove('open');
+}
+
+function submitBooking() {
+  const fn = document.getElementById('bFirstName').value.trim();
+  const ln = document.getElementById('bLastName').value.trim();
+  const em = document.getElementById('bEmail').value.trim();
+  const ph = document.getElementById('bPhone').value.trim();
+  const dt = document.getElementById('bDate').value;
+  const px = document.getElementById('bPax').value.trim();
+  const pkg = document.getElementById('bPackage').value.trim();
+  if (!fn || !ln || !em || !ph || !dt || !px) {
+    alert('Please fill in all required fields to continue.');
+    return;
+  }
+  const d = destinations[currentKey];
+  document.getElementById('bookingFormWrap').style.display = 'none';
+  document.getElementById('bookingSuccessMsg').textContent =
+    `Thank you, ${fn}! We've received your inquiry for ${d ? d.name : 'your chosen package'}. Our team will reach out to ${em} within 1–2 business days.`;
+  document.getElementById('bookingSuccess').classList.add('show');
+}
+
+/* Close popup on background click */
+document.getElementById('bookingPopupBg').addEventListener('click', function(e) {
+  if (e.target === this) closeBooking();
+});
+
+/* ══════════════════════════════════
+   IMAGE LIGHTBOX
+══════════════════════════════════ */
+function openLightbox() {
+  const src = document.getElementById('detailPkgImg').src;
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('imgLightbox').classList.add('open');
+}
+function closeLightbox() {
+  document.getElementById('imgLightbox').classList.remove('open');
+}
+
+/* ESC key */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    if (document.getElementById('imgLightbox').classList.contains('open')) closeLightbox();
+    else if (document.getElementById('bookingPopupBg').classList.contains('open')) closeBooking();
+    else if (document.getElementById('detailOverlay').classList.contains('open')) closeDetail();
+  }
+});
+
+/* ══════════════════════════════════
+   NAVBAR & SCROLL
+══════════════════════════════════ */
+const ham = document.getElementById('hamburger');
+const mob = document.getElementById('nav-mobile');
+ham.addEventListener('click', () => mob.classList.toggle('open'));
+
+const nav = document.getElementById('mainNav');
+const progressBar = document.getElementById('read-progress');
+const docHeight = () => document.documentElement.scrollHeight - window.innerHeight;
+let ticking = false;
+window.addEventListener('scroll', () => {
+  if (ticking) return;
+  window.requestAnimationFrame(() => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+    if (progressBar) {
+      const pct = docHeight() > 0 ? (window.scrollY / docHeight()) * 100 : 0;
+      progressBar.style.width = Math.min(pct, 100) + '%';
+    }
+    ticking = false;
+  });
+  ticking = true;
+}, { passive: true });
+
+/* ══════════════════════════════════
+   SCROLL REVEAL
+══════════════════════════════════ */
+if ('IntersectionObserver' in window) {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('is-visible'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.10, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal, .stagger-children').forEach(el => obs.observe(el));
+} else {
+  document.querySelectorAll('.reveal, .stagger-children').forEach(el => el.classList.add('is-visible'));
+}
+window.addEventListener('DOMContentLoaded', () => {
+
+  const params = new URLSearchParams(window.location.search);
+
+  const book = params.get('book');
+
+  if (book && destinations[book]) {
+
+    // slight delay ensures everything is loaded
+    setTimeout(() => {
+      openDetail(book);
+    }, 100);
+
+  }
+
+});
+</script>
+</body>
+</html>

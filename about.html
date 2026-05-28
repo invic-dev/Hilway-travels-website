@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="icon" type="image/png" href="fab-icon.png"/>
+  <title>About Us — Hilway Travels</title>
+  <meta name="description" content="Learn about Hilway Travels — your trusted travel partner based in Kalibo, Aklan, committed to smooth, reliable, and meaningful travel experiences."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'" fetchpriority="low"/>
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet"/></noscript>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --orange: #F5A623;
+      --blue: #0057A8;
+      --light-gray: #e8e8e8;
+      --mid-gray: #c8c8c8;
+      --text-dark: #222;
+      --text-gray: #555;
+      --bg-gray: #f5f5f5;
+      --container: 1200px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Open Sans', sans-serif; color: var(--text-dark); overflow-x: hidden; }
+
+    .container { width: 100%; max-width: var(--container); margin: 0 auto; padding: 0 clamp(16px, 4vw, 60px); }
+
+    /* ══ NAVBAR ══ */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(16px, 4vw, 60px);
+      height: 70px;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
+      position: sticky;
+      top: 0;
+      z-index: 200;
+    }
+    .logo {
+      width: 100px;
+      height: auto;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      margin-right: auto;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: clamp(16px, 3vw, 40px);
+    }
+    nav ul a {
+      text-decoration: none;
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(10px, 1vw, 13px);
+      font-weight: 600;
+      color: var(--text-dark);
+      letter-spacing: 1px;
+      transition: color .2s ease;
+      position: relative;
+      display: inline-block;
+    }
+    nav ul a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -5px;
+      width: 0;
+      height: 2px;
+      background-color: var(--blue);
+      transition: width .3s ease;
+    }
+    nav ul a:hover { color: var(--blue); }
+    nav ul a:hover::after { width: 100%; }
+    nav ul a.active { color: var(--blue); }
+    nav ul a.active::after { width: 100%; }
+
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:4px; background:none; border:none; }
+    .hamburger span { width:24px; height:2px; background:var(--text-dark); border-radius:2px; transition: .3s; display:block; }
+    .nav-mobile { display:none; flex-direction:column; background:#fff; padding:16px clamp(16px,4vw,60px); gap:14px; box-shadow:0 4px 10px rgba(0,0,0,.1); }
+    .nav-mobile a { text-decoration:none; font-family:'Montserrat',sans-serif; font-size:13px; font-weight:600; color:var(--text-dark); letter-spacing:1px; }
+    .nav-mobile.open { display:flex; }
+    nav.scrolled { box-shadow: 0 4px 24px rgba(0,0,0,.14); }
+
+    /* ══ PROGRESS BAR ══ */
+    #read-progress {
+      position: fixed; top: 0; left: 0; z-index: 9999;
+      height: 3px; width: 0%;
+      background: linear-gradient(to right, var(--blue), var(--orange));
+      transition: width 0.1s linear;
+      pointer-events: none;
+    }
+
+    /* ══ HERO / COVER ══ */
+    .about-hero {
+    position: relative;
+    min-height: clamp(280px, 45vh, 480px);
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+
+    overflow: hidden;
+}
+
+.about-hero-bg {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+}
+
+.about-hero-bg img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: center;
+
+    display: block;
+}
+    .about-hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, rgba(0,0,0,0.72) 40%, rgba(0,0,0,0.28) 100%);
+    }
+    .about-hero-content {
+      position: relative; z-index: 2;
+      padding: clamp(30px,5vw,72px) clamp(24px,5vw,80px);
+      max-width: 700px;
+    }
+    .about-hero-eyebrow {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(9px, 0.85vw, 11px);
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .about-hero-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 28px; height: 2px;
+      background: var(--orange);
+      border-radius: 2px;
+    }
+    .about-hero-content h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(32px, 4.5vw, 62px);
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.15;
+      text-shadow: 0 2px 16px rgba(0,0,0,.35);
+    }
+    .about-hero-content p {
+      font-size: clamp(12px,1.1vw,16px);
+      color: rgba(255,255,255,0.80);
+      margin-top: 16px;
+      line-height: 1.7;
+      font-style: italic;
+    }
+
+    /* ══ SECTION HEADER (shared) ══ */
+    .section-header { text-align:center; padding: clamp(20px,3vw,36px) clamp(16px,4vw,60px) clamp(12px,2vw,24px); }
+    .section-icon { font-size: clamp(26px,3vw,38px); margin-bottom:8px; }
+    .section-header h2 {
+      font-family:'Montserrat',sans-serif;
+      font-size: clamp(16px,2.2vw,26px);
+      font-weight:800; letter-spacing:2px; text-transform:uppercase;
+    }
+    .section-header p { font-size: clamp(12px,1.1vw,15px); color:var(--text-gray); margin-top:8px; line-height:1.6; }
+    .header-line {
+      display: block; width: 0; height: 3px;
+      background: var(--orange); border-radius: 2px;
+      margin: 0 auto 16px;
+      transition: width 0.6s cubic-bezier(.22,.68,0,1.05);
+    }
+    .header-line.is-visible { width: 36px; }
+
+    /* ══ ABOUT US (2-col) ══ */
+    .about-us-section {
+      background: #fff;
+      padding: clamp(48px, 7vw, 96px) clamp(24px, 5vw, 80px);
+    }
+    .about-us-grid {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: clamp(32px, 5vw, 80px);
+      align-items: center;
+      max-width: var(--container);
+      margin: 0 auto;
+    }
+    .about-us-eyebrow {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(9px, 0.8vw, 11px);
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .about-us-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 24px; height: 2px;
+      background: var(--orange);
+      border-radius: 2px;
+    }
+    .about-us-left h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(22px, 2.8vw, 38px);
+      font-weight: 800;
+      color: var(--text-dark);
+      line-height: 1.2;
+      margin-bottom: 24px;
+    }
+    .about-us-left h2 span { color: var(--blue); }
+    .about-us-left p {
+      font-size: clamp(13px, 1.05vw, 15px);
+      color: var(--text-gray);
+      line-height: 1.85;
+      margin-bottom: 16px;
+    }
+    .about-contact-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(11px,1vw,13px);
+      font-weight: 700;
+      color: var(--blue);
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      transition: color .2s;
+    }
+    .about-contact-link:hover { color: var(--orange); }
+    .about-contact-link .arrow { font-size: 16px; transition: transform .2s; }
+    .about-contact-link:hover .arrow { transform: translateX(4px); }
+
+    /* Logo / right col */
+    .about-us-right {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .about-logo-wrap {
+      width: 100%;
+      max-width: 380px;
+      aspect-ratio: 1;
+      border-radius: 24px;
+      background: linear-gradient(135deg, #f0f6ff 0%, #e8f0fb 60%, #fff7e8 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 16px 56px rgba(0,87,168,.13), 0 4px 16px rgba(0,0,0,.07);
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .about-logo-wrap::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,87,168,.08) 0%, transparent 70%);
+    }
+    .about-logo-wrap::after {
+      content: '';
+      position: absolute;
+      bottom: -40px; left: -40px;
+      width: 160px; height: 160px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245,166,35,.10) 0%, transparent 70%);
+    }
+    .about-logo-wrap img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      position: relative;
+      z-index: 2;
+    }
+    /* Placeholder when no logo */
+    .logo-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+      z-index: 2;
+    }
+    .logo-placeholder-icon {
+      font-size: 72px;
+    }
+    .logo-placeholder-text {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(20px,2.4vw,30px);
+      font-weight: 800;
+      color: var(--blue);
+      letter-spacing: 2px;
+    }
+    .logo-placeholder-sub {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--orange);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    /* ══ MISSION & VISION (2-col) ══ */
+    .mv-section {
+      background: var(--bg-gray);
+      padding: clamp(48px, 7vw, 96px) clamp(24px, 5vw, 80px);
+    }
+    .mv-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(24px, 4vw, 56px);
+      max-width: var(--container);
+      margin: 0 auto;
+    }
+    .mv-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: clamp(28px, 3.5vw, 48px);
+      box-shadow: 0 4px 24px rgba(0,0,0,.07);
+      position: relative;
+      overflow: hidden;
+      transition: transform .3s ease, box-shadow .3s ease;
+    }
+    .mv-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(0,0,0,.12);
+    }
+    .mv-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+    }
+    .mv-card.mission::before { background: var(--blue); }
+    .mv-card.vision::before { background: var(--orange); }
+    .mv-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(9px, 0.8vw, 11px);
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      padding: 6px 16px;
+      border-radius: 50px;
+    }
+    .mv-card.mission .mv-tag { background: rgba(0,87,168,.08); color: var(--blue); }
+    .mv-card.vision .mv-tag { background: rgba(245,166,35,.10); color: #c07f00; }
+    .mv-card h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(20px, 2.2vw, 30px);
+      font-weight: 800;
+      margin-bottom: 18px;
+      line-height: 1.2;
+    }
+.mv-card.mission h3,
+.mv-card.vision h3 {
+    text-align: center;
+}
+
+.mv-card.mission h3 {
+    color: var(--blue);
+}
+
+.mv-card.vision h3 {
+    color: #c07f00;
+}
+    .mv-card p {
+      font-size: clamp(13px, 1.05vw, 15px);
+      color: var(--text-gray);
+      line-height: 1.85;
+    }
+    .mv-icon {
+      position: absolute;
+      bottom: 20px; right: 24px;
+      font-size: 72px;
+      opacity: 0.055;
+      line-height: 1;
+    }
+
+    /* ══ CONTACT STRIP ══ */
+    .contact-strip {
+      background: var(--blue);
+      padding: clamp(24px, 3vw, 40px) clamp(24px, 5vw, 80px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(12px, 2vw, 24px);
+      flex-wrap: wrap;
+    }
+    .contact-strip p {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(13px, 1.1vw, 16px);
+      font-weight: 700;
+      color: rgba(255,255,255,0.85);
+      letter-spacing: 0.5px;
+    }
+    .contact-strip a {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(13px, 1.2vw, 17px);
+      font-weight: 800;
+      color: #fff;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 26px;
+      border: 2px solid rgba(255,255,255,0.5);
+      border-radius: 50px;
+      transition: background .2s, border-color .2s;
+    }
+    .contact-strip a:hover {
+      background: rgba(255,255,255,0.15);
+      border-color: #fff;
+    }
+
+    /* ══ TEAM SECTION ══ */
+    .team-section {
+      background: #fff;
+      padding: clamp(48px, 7vw, 96px) clamp(24px, 5vw, 80px);
+    }
+    .team-grid-row1 {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: clamp(14px, 2vw, 28px);
+      max-width: var(--container);
+      margin: 0 auto clamp(14px, 2vw, 28px);
+    }
+    .team-grid-row2 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: clamp(14px, 2vw, 28px);
+      max-width: calc(var(--container) * 0.8);
+      margin: 0 auto;
+    }
+    .team-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+    .team-photo {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 16px;
+      background: linear-gradient(145deg, #e8f0fb 0%, #dde8f7 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 4px 20px rgba(0,87,168,.10);
+      transition: transform .3s ease, box-shadow .3s ease;
+    }
+    .team-card:hover .team-photo {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 40px rgba(0,87,168,.18);
+    }
+    .team-photo-inner {
+      width: 100%; height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .team-photo-icon {
+      font-size: clamp(36px, 4vw, 56px);
+      opacity: 0.35;
+    }
+    .team-photo-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(8px, 0.75vw, 10px);
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--blue);
+      opacity: 0.5;
+    }
+    /* Bottom accent bar */
+    .team-photo::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(to right, var(--blue), var(--orange));
+      transform: scaleX(0);
+      transition: transform .3s ease;
+    }
+    .team-card:hover .team-photo::after { transform: scaleX(1); }
+    .team-name {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(11px, 1vw, 13px);
+      font-weight: 700;
+      color: var(--text-dark);
+      text-align: center;
+      letter-spacing: 0.3px;
+    }
+    .team-role {
+      font-size: clamp(9px, 0.8vw, 11px);
+      color: var(--text-gray);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      text-align: center;
+      margin-top: -8px;
+      letter-spacing: 0.5px;
+    }
+
+    /* ══ FOOTER ══ */
+    footer {
+      background: #0c111d;
+      color: #9aa5b4;
+      position: relative;
+      overflow: hidden;
+    }
+    footer::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(to right, transparent, rgba(0,87,168,0.6), rgba(245,166,35,0.4), transparent);
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr 1.1fr;
+      gap: clamp(20px,3.5vw,60px);
+      align-items: start;
+      padding: clamp(10px,3vw,50px) clamp(24px,5vw,80px) clamp(22px,4vw,36px);
+    }
+    .footer-logo { display:flex; flex-direction:column; align-items:flex-start; }
+    .footer-brand-name {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(16px,1.6vw,20px); font-weight: 800;
+      color: #fff; letter-spacing: 1px; margin-bottom: 10px;
+    }
+    .footer-brand-desc {
+      font-size: clamp(11px,0.9vw,13px); color: #6b7280;
+      line-height: 1.75; margin-bottom: 22px; max-width: 230px;
+    }
+    .social-row { display: flex; gap: 10px; }
+    .social-btn {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: #1c2333; border: 1px solid #2d3748;
+      display: flex; align-items: center; justify-content: center;
+      color: #6b7280; font-size: 14px; text-decoration: none;
+      font-family: 'Montserrat', sans-serif; font-weight: 700;
+      transition: background .2s, color .2s, border-color .2s;
+    }
+    .social-btn:hover { background: var(--blue); color: #fff; border-color: var(--blue); }
+    .footer-col h4 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(9px,0.8vw,11px); font-weight: 700; color: #fff;
+      letter-spacing: 2px; text-transform: uppercase;
+      margin-bottom: clamp(14px,1.4vw,20px);
+      position: relative; padding-bottom: 10px;
+    }
+    .footer-col h4::after {
+      content: ''; position: absolute; left: 0; bottom: 0;
+      width: 20px; height: 2px; background: var(--orange); border-radius: 2px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: clamp(8px,0.8vw,12px); }
+    .footer-col ul li a, .footer-col ul li span {
+      font-size: clamp(11px,0.9vw,13px); color: #6b7280;
+      text-decoration: none; transition: color .2s;
+      display: flex; align-items: flex-start; gap: 8px; line-height: 1.5;
+    }
+    .footer-col ul li a:hover { color: #fff; }
+    .footer-col p { font-size: clamp(11px,0.9vw,13px); color: #6b7280; line-height: 1.75; }
+    .footer-contact-icon { font-size: 13px; flex-shrink: 0; margin-top: 2px; }
+    .payment-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+    .pay-badge {
+      background: #1c2333; border: 1px solid #2d3748; border-radius: 6px;
+      padding: 5px 11px; font-family: 'Montserrat', sans-serif;
+      font-size: clamp(9px,0.75vw,11px); font-weight: 700; color: #6b7280; letter-spacing: 0.5px;
+    }
+    .footer-bottom {
+      border-top: 1px solid #1c2333;
+      padding: clamp(16px,2vw,22px) clamp(24px,5vw,80px);
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; flex-wrap: wrap;
+    }
+    .footer-bottom-copy {
+      font-size: clamp(10px,0.85vw,12px); color: #4b5563;
+      font-family: 'Montserrat', sans-serif; font-weight: 600;
+    }
+    .footer-bottom-links { display: flex; gap: clamp(16px,2vw,28px); }
+    .footer-bottom-links a {
+      font-size: clamp(10px,0.85vw,12px); color: #4b5563;
+      text-decoration: none; transition: color .2s;
+      font-family: 'Montserrat', sans-serif; font-weight: 600;
+    }
+    .footer-bottom-links a:hover { color: #fff; }
+
+    /* ══ SCROLL ANIMATIONS ══ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity 0.65s cubic-bezier(.22,.68,0,1.05), transform 0.65s cubic-bezier(.22,.68,0,1.05);
+      will-change: opacity, transform;
+    }
+    .reveal.reveal--left  { transform: translateX(-40px); }
+    .reveal.reveal--right { transform: translateX(40px); }
+    .reveal.reveal--fade  { transform: none; }
+    .reveal.is-visible { opacity: 1; transform: none; }
+    .stagger-children > * {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.55s cubic-bezier(.22,.68,0,1.05), transform 0.55s cubic-bezier(.22,.68,0,1.05);
+    }
+    .stagger-children.is-visible > *:nth-child(1)  { transition-delay: 0.00s; }
+    .stagger-children.is-visible > *:nth-child(2)  { transition-delay: 0.07s; }
+    .stagger-children.is-visible > *:nth-child(3)  { transition-delay: 0.14s; }
+    .stagger-children.is-visible > *:nth-child(4)  { transition-delay: 0.21s; }
+    .stagger-children.is-visible > *:nth-child(5)  { transition-delay: 0.28s; }
+    .stagger-children.is-visible > *:nth-child(6)  { transition-delay: 0.35s; }
+    .stagger-children.is-visible > *:nth-child(7)  { transition-delay: 0.42s; }
+    .stagger-children.is-visible > *:nth-child(8)  { transition-delay: 0.49s; }
+    .stagger-children.is-visible > *:nth-child(9)  { transition-delay: 0.56s; }
+    .stagger-children.is-visible > * { opacity: 1; transform: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal, .stagger-children > *, .header-line {
+        opacity: 1 !important; transform: none !important;
+        transition: none !important; width: auto !important;
+      }
+    }
+
+    /* ══ RESPONSIVE ══ */
+    @media (max-width: 1024px) {
+      .footer-top { grid-template-columns: repeat(3,1fr); }
+      .footer-logo { grid-column: 1 / -1; }
+      .about-us-grid { grid-template-columns: 1fr; }
+      .about-us-right { justify-content: flex-start; }
+      .about-logo-wrap { max-width: 280px; }
+      .team-grid-row1 { grid-template-columns: repeat(3, 1fr); }
+      .team-grid-row2 { grid-template-columns: repeat(3, 1fr); max-width: 100%; }
+    }
+    @media (max-width: 768px) {
+      nav ul { display:none; }
+      .hamburger { display:flex; }
+      .mv-grid { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: repeat(2,1fr); }
+      .footer-logo { grid-column: 1 / -1; }
+      .team-grid-row1 { grid-template-columns: repeat(3, 1fr); }
+      .team-grid-row2 { grid-template-columns: repeat(3, 1fr); max-width: 100%; }
+    }
+    @media (max-width: 560px) {
+      .team-grid-row1 { grid-template-columns: repeat(2, 1fr); }
+      .team-grid-row2 { grid-template-columns: repeat(2, 1fr); }
+      .footer-top { grid-template-columns: 1fr 1fr; gap:24px; }
+      .footer-logo { grid-column: 1 / -1; }
+      /* Hero text sizing */
+      .about-hero-content h1 { font-size: clamp(26px, 8vw, 36px); }
+      /* Contact strip stacks on small screens */
+      .contact-strip { flex-direction: column; text-align: center; gap: 10px; }
+    }
+    @media (max-width: 480px) {
+      .about-us-grid { gap: 24px; }
+      .footer-top { grid-template-columns: 1fr; gap: 20px; }
+      .footer-logo { grid-column: unset; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .footer-bottom-links { flex-wrap: wrap; gap: 12px; }
+      .mv-grid { gap: 16px; }
+      .about-logo-wrap { max-width: 100%; padding: 28px; }
+    }
+    @media (max-width: 400px) {
+      .footer-top { grid-template-columns: 1fr; }
+      .team-grid-row1 { grid-template-columns: repeat(2, 1fr); }
+      .team-grid-row2 { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+<div id="read-progress"></div>
+
+<!-- ══ NAVBAR ══ -->
+<!-- ══ NAVBAR ══ -->
+<nav id="mainNav">
+  <a class="logo" href="index.html">
+    <img src="LOGO.svg" alt="Hilway Travels"/>
+  </a>
+
+  <ul id="nav-links">
+    <li><a href="index.html" >HOME</a></li>
+    <li><a href="destinations.html">DESTINATION</a></li>
+    <li><a href="visa-assistance.html">VISA ASSISTANCE</a></li>
+    <li><a href="flights.html">FLIGHTS BOOKINGS</a></li>
+    <li><a href="about.html" class="active" >ABOUT US</a></li>
+    <li><a href="contact.html">CONTACT US</a></li>
+  </ul>
+
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</nav>
+
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html">HOME</a>
+  <a href="destinations.html">DESTINATION</a>
+  <a href="visa-assistance.html">VISA ASSISTANCE</a>
+  <a href="flights.html">FLIGHTS BOOKINGS</a>
+  <a href="about.html">ABOUT US</a>
+  <a href="contact.html">CONTACT US</a>
+</div>
+
+<!-- ══ HERO / COVER PHOTO ══ -->
+<section class="about-hero">
+  <div class="about-hero-bg">
+    <img src="Coverphoto.png" alt="Travel Hero Image" />
+  </div>
+  <div class="about-hero-overlay"></div>
+  <div class="about-hero-content">
+    <div class="about-hero-eyebrow">Hilway Travels</div>
+    <h1>Travel with ease.<br>Travel with Hilway</h1>
+  </div>
+</section>
+
+<!-- ══ ABOUT US ══ -->
+<section class="about-us-section">
+  <div class="about-us-grid">
+
+    <!-- LEFT: Description -->
+    <div class="about-us-left reveal reveal--left">
+      <div class="about-us-eyebrow">About Us</div>
+      <h2>Travel the <span>Hilway</span> Way</h2>
+      <p>
+        Hilway Travels is a travel agency based in Poblacion, Kalibo, Aklan, committed to creating smooth, reliable, and meaningful travel experiences for every client. Inspired by the Aklanon/Hiligaynon word <strong>"Hilway,"</strong> which conveys a deep sense of calmness, serenity, orderliness, and harmony, our agency aims to make every journey feel easy, well-organized, and worry-free.
+      </p>
+      <p>
+        At Hilway Travels, we believe that travel should not be stressful or confusing. It should be exciting, comfortable, and memorable. That is why we focus on providing practical travel solutions with genuine customer care 🤝, helping individuals, families, groups, and business travelers plan their trips with confidence and peace of mind.
+      </p>
+      <p>
+        Rooted in the heart of Aklan, we are proud to serve our community and travelers beyond, offering dependable services that turn travel plans into seamless experiences.
+      </p>
+      <a href="mailto:hilwaytravels@gmail.com" class="about-contact-link">
+        ✉️ hilwaytravels@gmail.com <span class="arrow">→</span>
+      </a>
+    </div>
+
+    <!-- RIGHT: Logo -->
+    <div class="about-us-right reveal reveal--right">
+      <div class="about-logo-wrap">
+        <!-- Replace with: <img src="LOGO.svg" alt="Hilway Travels Logo" /> -->
+        <div class="logo-placeholder">
+         <img src="LOGO-alt.svg" alt="Hilway Travels Logo" style="width: 500%; height: auto; object-fit: contain;" />
+         
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ MISSION & VISION ══ -->
+<section class="mv-section">
+  <div class="section-header reveal">
+    <span class="header-line"></span>
+    <h2>Mission &amp; Vision</h2>
+    <p>The principles that guide every journey we plan.</p>
+  </div>
+  <div class="mv-grid">
+
+    <!-- MISSION -->
+    <div class="mv-card mission reveal reveal--left">
+      <div class="mv-tag">🎯 Our Mission</div>
+      <h3>Mission</h3>
+      <p>
+        To provide dependable, organized, and customer-focused travel services that make every journey convenient, safe, and stress-free, while promoting the values of calmness, harmony, and excellent service embodied by the name Hilway.
+      </p>
+      <div class="mv-icon">🎯</div>
+    </div>
+
+    <!-- VISION -->
+    <div class="mv-card vision reveal reveal--right">
+      <div class="mv-tag">🌟 Our Vision</div>
+      <h3>Vision</h3>
+      <p>
+        To become the most trusted travel agency in Western Visayas, recognized for delivering convenient, affordable, and well-coordinated travel solutions that bring comfort and peace of mind to every traveler.
+      </p>
+      <div class="mv-icon">🌟</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ CONTACT STRIP ══ -->
+<div class="contact-strip reveal reveal--fade">
+  <p>Have questions about your next trip?</p>
+  <a href="mailto:travelhilway@gmail.com">✉️ travelhilway@gmail.com</a>
+</div>
+
+<!-- ══ THE HILWAY TEAM ══ -->
+<section class="team-section">
+  <div class="section-header reveal">
+    <span class="header-line"></span>
+    <div class="section-icon">🤝</div>
+    <h2>The Hilway Team</h2>
+    <p>Committed individuals delivering reliable, seamless, and personalized travel experiences.</p>
+  </div>
+
+  <!-- Row 1: 5 members -->
+  <div class="team-grid-row1 stagger-children">
+
+    <div class="team-card">
+      <div class="team-photo">
+        <div class="team-photo-inner">
+<img src ="Team/Princess-Elaine-Sandy-Roldan.jpg" alt="" style="width:100%; height:100%; object-fit:cover; " />
+        </div>
+      </div>
+      <div class="team-name">Princess Elaine Sandy Roldan</div>
+    </div>
+
+    <div class="team-card">
+      <div class="team-photo">
+        <div class="team-photo-inner">
+<img src ="Team/Mhecca-Ella-Fontamillas.jpg" alt="" style="width:100%; height:100%; object-fit:cover; " />
+        </div>
+      </div>
+      <div class="team-name">Mhecca Ella Fontamillas</div>
+    </div>
+
+    <div class="team-card">
+      <div class="team-photo">
+        <div class="team-photo-inner">
+<img src ="Team/Hanna-Rano.jpg" alt="" style="width:100%; height:100%; object-fit:cover; " />
+        </div>
+      </div>
+      <div class="team-name">Hanna Rano</div>
+
+    </div>
+
+    <div class="team-card">
+      <div class="team-photo">
+        <div class="team-photo-inner">
+<img src ="Team/Julianne-Rose-Pastrana.jpg" alt="" style="width:100%; height:100%; object-fit:cover; " />
+        </div>
+      </div>
+      <div class="team-name">Julianne Rose Pastrana</div>
+
+    </div>
+
+    <div class="team-card">
+      <div class="team-photo">
+        <div class="team-photo-inner">
+         <img src ="Team/Julia-Danica-Gonzales.jpg" alt="" style="width:100%; height:100%; object-fit:cover; " /> 
+        </div>
+      </div>
+      <div class="team-name">Julia Danica Gonzales</div>
+
+    </div>
+
+  </div>
+
+  <!-- Row 2: 4 members (centered) -->
+  <div class="team-grid-row2 stagger-children">
+
+    <div class="team-card">
+      <div class="team-photo">
+        <div class="team-photo-inner">
+<img src ="Team/Shine-Nervar.jpg" alt="" style="width:100%; height:100%; object-fit:cover; " />
+        </div>
+      </div>
+      <div class="team-name">Shine Nervar</div>
+    </div>
+
+    <div class="team-card">
+      <div class="team-photo">
+        <div class="team-photo-inner">
+<img src ="Team/Hanna-Jane-De Jesus.jpg" alt="" style="width:100%; height:100%; object-fit:cover; " />
+        </div>
+      </div>
+      <div class="team-name">Hanna Jane De Jesus</div>
+
+    </div>
+
+   <div class="team-card">
+  <div class="team-photo">
+    <div class="team-photo-inner">
+      <img src="Team/Patricia-Candol.jpg" alt="Patricia Candol"
+           style="width:100%; height:100%; object-fit:cover;" />
+    </div>
+  </div>
+  <div class="team-name">Patricia Candol</div>
+</div>
+
+<div class="team-card">
+  <div class="team-photo">
+    <div class="team-photo-inner">
+      <img src="Team/Riezen-Suba.png" alt="Riezen Suba"
+           style="width:100%; height:100%; object-fit:cover;" />
+    </div>
+  </div>
+  <div class="team-name">Riezen Suba</div>
+</div>
+
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="footer-top">
+
+    <!-- Brand -->
+    <div class="footer-col footer-logo">
+   <img src="LOGO.svg" alt="Hilway Travels" style="height:100px;width:auto;display:block;filter:brightness(0) invert(1);">
+      <div class="footer-brand-desc">Inspired by the Aklanon/Hiligaynon word "Hilway," we aim to make every journey feel easy, well-organized, and worry-free.</div>
+      <div class="social-row">
+        <a class="social-btn" href="#" aria-label="Facebook">f</a>
+        <a class="social-btn" href="#" aria-label="Instagram">in</a>
+        <a class="social-btn" href="#" aria-label="X">𝕏</a>
+        <a class="social-btn" href="#" aria-label="TikTok">ꚠ</a>
+      </div>
+    </div>
+
+    <!-- Contact -->
+    <div class="footer-col">
+      <h4>Contact Us</h4>
+      <ul>
+        <li><span><span class="footer-contact-icon">📍</span>Kalibo, Aklan, Philippines</span></li>
+        <li><span><span class="footer-contact-icon">📞</span>+63 939 151 0082</span></li>
+        <li><span><span class="footer-contact-icon">✉️</span>hilwaytravels.ph</span></li>
+        <li><span><span class="footer-contact-icon">🌐</span>www.hilway.com</span></li>
+      </ul>
+    </div>
+
+    <!-- Navigation -->
+    <div class="footer-col">
+      <h4>Explore</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#">Destinations</a></li>
+        <li><a href="#">Visa Assistance</a></li>
+        <li><a href="#">Tour Packages</a></li>
+        <li><a href="#">Other Services</a></li>
+        <li><a href="about.html">About Us</a></li>
+      </ul>
+    </div>
+
+    <!-- Company -->
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">Blogs &amp; News</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="about.html">Our Team</a></li>
+        <li><a href="#">Press</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </div>
+
+    <!-- Safe Payment -->
+    <div class="footer-col">
+      <h4>Safe Payment</h4>
+      <p style="margin-bottom:14px;">Payments are encrypted and transferred securely with SSL protocol.</p>
+      <div class="payment-badges">
+        <span class="pay-badge">💳 Visa</span>
+        <span class="pay-badge">💳 Mastercard</span>
+        <span class="pay-badge">📱 GCash</span>
+        <span class="pay-badge">🏦 Bank Transfer</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <span class="footer-bottom-copy">© 2026 HILWAY TRAVELS. All Rights Reserved.</span>
+    <div class="footer-bottom-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Cookie Settings</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Mobile menu
+  const ham = document.getElementById('hamburger');
+  const mob = document.getElementById('nav-mobile');
+  ham.addEventListener('click', () => mob.classList.toggle('open'));
+
+  // Scroll animations
+  if ('IntersectionObserver' in window) {
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -48px 0px' });
+
+    document.querySelectorAll('.reveal, .stagger-children, .header-line').forEach(el => {
+      revealObserver.observe(el);
+    });
+  } else {
+    document.querySelectorAll('.reveal, .stagger-children, .header-line').forEach(el => {
+      el.classList.add('is-visible');
+    });
+  }
+
+  // Nav shadow + progress bar on scroll
+  const nav = document.getElementById('mainNav');
+  const progressBar = document.getElementById('read-progress');
+  const docHeight = () => document.documentElement.scrollHeight - window.innerHeight;
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (ticking) return;
+    window.requestAnimationFrame(() => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+      if (progressBar) {
+        const pct = docHeight() > 0 ? (window.scrollY / docHeight()) * 100 : 0;
+        progressBar.style.width = Math.min(pct, 100) + '%';
+      }
+      ticking = false;
+    });
+    ticking = true;
+  }, { passive: true });
+
+  // Hero parallax
+  const heroContent = document.querySelector('.about-hero-content');
+  if (heroContent && window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      heroContent.style.transform = `translateY(${y * 0.22}px)`;
+      heroContent.style.opacity = Math.max(0, 1 - y / 480);
+    }, { passive: true });
+  }
+</script>
+</body>
+</html>

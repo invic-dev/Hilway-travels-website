@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="image/png" href="fab-icon.png"/>
+  <title>Flights — Hilway Travels</title>
+  <meta name="description" content="Search and compare flights with Hilway Travels. Find the best deals to your favourite destinations."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --orange: #F5A623;
+      --blue: #0057A8;
+      --light-gray: #e8e8e8;
+      --text-dark: #222;
+      --text-gray: #555;
+      --bg-gray: #f5f5f5;
+      --container: 1200px;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Open Sans', sans-serif; color: var(--text-dark); overflow-x: hidden; background: var(--bg-gray); }
+
+    /* ══ PROGRESS BAR ══ */
+    #read-progress {
+      position: fixed; top: 0; left: 0; z-index: 9999;
+      height: 3px; width: 0%;
+      background: linear-gradient(to right, var(--blue), var(--orange));
+      transition: width 0.1s linear; pointer-events: none;
+    }
+    #airportListFrom{
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+#airportListFrom,
+#airportListTo{
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+    /* ══ NAVBAR ══ */
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(16px, 4vw, 60px);
+      height: 70px; background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
+      position: sticky; top: 0; z-index: 200;
+      transition: box-shadow .3s;
+    }
+    nav.scrolled { box-shadow: 0 4px 24px rgba(0,0,0,.14); }
+    .logo { width: 100px; height: auto; display: flex; align-items: center; text-decoration: none; margin-right: auto; }
+    .logo-text {
+      font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 18px;
+      color: var(--blue); letter-spacing: 1px; text-decoration: none;
+    }
+    .logo-text span { color: var(--orange); }
+    nav ul { list-style: none; display: flex; gap: clamp(16px, 3vw, 40px); }
+    nav ul a {
+      text-decoration: none; font-family: 'Montserrat', sans-serif;
+      font-size: clamp(10px, 1vw, 13px); font-weight: 600;
+      color: var(--text-dark); letter-spacing: 1px; transition: color .2s ease;
+      position: relative; display: inline-block;
+    }
+    nav ul a::after {
+      content: ''; position: absolute; left: 0; bottom: -5px;
+      width: 0; height: 2px; background-color: var(--blue); transition: width .3s ease;
+    }
+    nav ul a:hover { color: var(--blue); }
+    nav ul a:hover::after { width: 100%; }
+    nav ul a.active { color: var(--blue); }
+    nav ul a.active::after { width: 100%; }
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:4px; background:none; border:none; }
+    .hamburger span { width:24px; height:2px; background:var(--text-dark); border-radius:2px; transition:.3s; display:block; }
+    .nav-mobile { display:none; flex-direction:column; background:#fff; padding:16px clamp(16px,4vw,60px); gap:14px; box-shadow:0 4px 10px rgba(0,0,0,.1); }
+    .nav-mobile a { text-decoration:none; font-family:'Montserrat',sans-serif; font-size:13px; font-weight:600; color:var(--text-dark); letter-spacing:1px; }
+    .nav-mobile.open { display:flex; }
+
+    /* ══ HERO ══ */
+    .flights-hero {
+  position: relative;
+  min-height: clamp(160px, 34vw, 280px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  background: #001f3f;
+}
+
+.flights-hero-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.flights-hero-bg img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.22;
+}
+
+.flights-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.276) 0%,
+    rgba(0, 87, 168, 0.242) 100%
+  );
+}
+
+.flights-hero-content {
+  position: relative;
+  z-index: 2;
+  color: #fff;
+  padding: 40px clamp(20px,6vw,120px);
+}
+
+.flights-hero-badge {
+  display: inline-block;
+  background: var(--orange);
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(9px, .8vw, 11px);
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 5px 16px;
+  border-radius: 50px;
+  margin-bottom: 16px;
+}
+
+.flights-hero-content h1 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(28px, 4vw, 46px);
+  font-weight: 800;
+  line-height: 1.2;
+  text-shadow: 0 2px 12px rgba(0,0,0,.4);
+}
+
+.flights-hero-content p {
+  font-size: clamp(13px, 1.2vw, 15px);
+  margin-top: 10px;
+  opacity: .85;
+  font-style: italic;
+}
+    /* ══ SEARCH WIDGET ══ */
+    .search-wrapper {
+      max-width: 960px; margin: 0 auto; 
+      padding: clamp(16px, 2.5vw, 30px) clamp(16px, 4vw, 60px);
+    }
+    .search-card {
+      background: #043795;
+      border-radius: 16px;
+      padding: clamp(18px, 2.2vw, 28px);
+      box-shadow: 0 8px 40px rgba(0,0,0,.18);
+    }
+    .search-card h2 {
+      font-family: 'Montserrat', sans-serif; font-size: clamp(15px, 1.6vw, 20px); font-weight: 800;
+      color: #fff; margin-bottom: 16px;
+    }
+
+    /* Trip type tabs */
+    .trip-tabs { display: flex; gap: 0; margin-bottom: 18px; width: fit-content; border: 1.5px solid rgba(255,255,255,.25); border-radius: 8px; overflow: hidden; }
+    .trip-tab {
+      padding: 7px 20px; font-family: 'Montserrat', sans-serif; font-size: clamp(9px,.85vw,11px);
+      font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer;
+      border: none; background: transparent; color: rgba(255,255,255,.6); transition: all .2s;
+    }
+    .trip-tab.active { background: #fff; color: var(--blue); }
+    .trip-tab:hover:not(.active) { background: rgba(255,255,255,.1); color: #fff; }
+
+    /* Airport fields */
+    .search-row-airports {
+      display: grid; grid-template-columns: 1fr auto 1fr;
+      gap: 10px; align-items: center; margin-bottom: 12px;
+    }
+    @media (max-width: 700px) { .search-row-airports { grid-template-columns: 1fr; } }
+
+    .swap-btn {
+      width: 42px; height: 42px; border-radius: 50%; background: var(--orange);
+      border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      font-size: 18px; color: #fff; transition: transform .3s, background .2s; flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(245,166,35,.4);
+    }
+    .swap-btn:hover { transform: rotate(180deg); background: #e0941a; }
+    @media (max-width: 700px) { .swap-btn { display: none; } }
+
+    .airport-field {
+      background: #fff; border-radius: 10px; padding: 11px 14px;
+      display: flex; align-items: center; gap: 10px; cursor: pointer; position: relative;
+    }
+    .airport-icon { color: #aaa; font-size: 16px; flex-shrink: 0; }
+    .airport-label { font-family: 'Montserrat', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #888; margin-bottom: 2px; }
+    .airport-value { font-family: 'Montserrat', sans-serif; font-size: clamp(12px,1.1vw,15px); font-weight: 800; color: var(--text-dark); }
+    .airport-sub { font-size: 10px; color: #888; margin-top: 1px; }
+
+    /* Airport dropdown */
+    .airport-dropdown {
+      position: absolute; top: 100%; left: 0; right: 0; z-index: 50;
+      background: #fff; border-radius: 12px; box-shadow: 0 12px 40px rgba(0,0,0,.18);
+      margin-top: 6px; overflow: hidden; display: none;
+    }
+    .airport-dropdown.open { display: block; }
+    .airport-search-input {
+      width: 100%; padding: 12px 16px; border: none; border-bottom: 1px solid #f0f0f0;
+      font-family: 'Open Sans', sans-serif; font-size: 13px; outline: none;
+    }
+    .airport-option {
+      padding: 11px 16px; cursor: pointer; display: flex; align-items: center; gap: 10px;
+      transition: background .15s;
+    }
+    .airport-option:hover { background: #f0f6ff; }
+    .airport-option-code { font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 800; color: var(--blue); min-width: 40px; }
+    .airport-option-name { font-size: 12px; color: #555; }
+
+    /* Second row */
+    .search-row-details {
+      display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 10px; margin-bottom: 16px;
+    }
+    @media (max-width: 860px) { .search-row-details { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 500px) { .search-row-details { grid-template-columns: 1fr; } }
+
+    .detail-field {
+      background: #fff; border-radius: 10px; padding: 10px 13px;
+    }
+    .detail-field label {
+      font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase; color: #888; display: block; margin-bottom: 4px;
+    }
+    .detail-field input, .detail-field select {
+      width: 100%; border: none; outline: none;
+      font-family: 'Montserrat', sans-serif; font-size: clamp(12px,1.1vw,14px); font-weight: 700;
+      color: var(--text-dark); background: transparent; cursor: pointer;
+    }
+    .detail-field.disabled { opacity: .45; pointer-events: none; }
+
+    /* Search button */
+    .search-footer { display: flex; justify-content: flex-end; }
+    .btn-search-flights {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 36px; background: #FCB214; color: #fff;
+      font-family: 'Montserrat', sans-serif; font-size: clamp(11px,.95vw,13px);
+      font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
+      border-radius: 10px; border: none; cursor: pointer;
+      transition: background .2s, transform .15s, box-shadow .2s;
+      box-shadow: 0 4px 20px rgba(0,87,168,.4);
+    }
+    .btn-search-flights:hover { background: #FCB214; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,87,168,.5); }
+    .btn-search-flights svg { width: 16px; height: 16px; fill: #fff; }
+
+    /* ══ RESULTS SECTION ══ */
+    .results-section {
+      max-width: 1100px; margin: 0 auto;
+      padding: 0 clamp(16px, 4vw, 60px) 60px;
+      display: none;
+    }
+    .results-section.visible { display: block; }
+
+    .results-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 20px; gap: 12px; flex-wrap: wrap;
+    }
+    .results-title {
+      font-family: 'Montserrat', sans-serif; font-size: clamp(14px,1.4vw,18px); font-weight: 800; color: #1b3a5c;
+    }
+    .results-count {
+      background: var(--orange); color: #fff;
+      font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700;
+      padding: 4px 12px; border-radius: 50px; letter-spacing: .5px;
+    }
+    .results-sort {
+      display: flex; align-items: center; gap: 8px;
+      font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700;
+      color: #555; letter-spacing: .5px;
+    }
+    .results-sort select {
+      border: 1.5px solid #e0e5ec; border-radius: 8px; padding: 6px 12px;
+      font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700;
+      color: var(--text-dark); outline: none; background: #fff;
+    }
+
+    /* Scrollable flights list */
+    #flightsList {
+      max-height: 560px;
+      overflow-y: auto;
+      padding-right: 6px;
+      scroll-behavior: smooth;
+    }
+    #flightsList::-webkit-scrollbar { width: 6px; }
+    #flightsList::-webkit-scrollbar-track { background: #eef1f6; border-radius: 10px; }
+    #flightsList::-webkit-scrollbar-thumb { background: #b0c4de; border-radius: 10px; }
+    #flightsList::-webkit-scrollbar-thumb:hover { background: var(--blue); }
+
+    /* Flight card */
+    .flight-card {
+      background: #fff; border-radius: 16px; margin-bottom: 14px;
+      box-shadow: 0 2px 16px rgba(0,0,0,.07);
+      display: grid; grid-template-columns: 140px 1fr auto;
+      gap: 0; overflow: hidden;
+      transition: transform .25s ease, box-shadow .25s ease;
+      animation: slide-in .35s ease both;
+    }
+    @keyframes slide-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+    .flight-card:nth-child(1) { animation-delay: .05s; }
+    .flight-card:nth-child(2) { animation-delay: .10s; }
+    .flight-card:nth-child(3) { animation-delay: .15s; }
+    .flight-card:nth-child(4) { animation-delay: .20s; }
+    .flight-card:nth-child(5) { animation-delay: .25s; }
+    .flight-card:nth-child(6) { animation-delay: .30s; }
+    .flight-card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,.13); }
+    @media (max-width: 640px) { .flight-card { grid-template-columns: 1fr; } }
+
+    /* Airline logo column */
+    .flight-airline {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 20px 14px; gap: 8px; border-right: 1px solid #f0f0f0;
+      background: #fafbfd;
+    }
+    .flight-airline img {
+      width: 64px; height: 64px; object-fit: contain; border-radius: 8px;
+      border: 1px solid #e8edf5;
+    }
+    .flight-airline-name {
+      font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 700;
+      color: #555; text-align: center; letter-spacing: .3px; line-height: 1.3;
+    }
+
+    /* Flight info */
+    .flight-info {
+      padding: 20px 24px; display: flex; flex-direction: column; justify-content: center; gap: 10px;
+    }
+    .flight-route {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .flight-time {
+      font-family: 'Montserrat', sans-serif; font-size: clamp(18px,2vw,24px); font-weight: 800; color: #1b3a5c;
+    }
+    .flight-airport-code {
+      font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700;
+      color: #888; letter-spacing: 1px; text-transform: uppercase; margin-top: 2px;
+    }
+    .flight-divider {
+      flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 0 8px;
+    }
+    .flight-duration {
+      font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700;
+      color: #888; letter-spacing: .5px;
+    }
+    .flight-line {
+      width: 100%; display: flex; align-items: center; gap: 0;
+    }
+    .flight-line-bar { flex: 1; height: 2px; background: #d0daea; }
+    .flight-line-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); flex-shrink: 0; }
+    .flight-line-plane { font-size: 14px; margin: 0 4px; color: var(--blue); }
+    .flight-stops {
+      font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 700;
+      letter-spacing: .5px; color: var(--orange);
+    }
+    .flight-stops.nonstop { color: #27ae60; }
+    .flight-meta {
+      display: flex; gap: 14px; flex-wrap: wrap;
+    }
+    .flight-meta-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 700;
+      color: #777; letter-spacing: .5px;
+    }
+    .flight-meta-chip svg { width: 12px; height: 12px; fill: #aaa; }
+
+    /* Price column */
+    .flight-price-col {
+      display: flex; flex-direction: column; align-items: flex-end; justify-content: center;
+      padding: 20px 24px; gap: 10px; border-left: 1px solid #f0f0f0; min-width: 160px;
+    }
+    @media (max-width: 640px) { .flight-price-col { align-items: flex-start; border-left: none; border-top: 1px solid #f0f0f0; } }
+    .flight-price-label { font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 700; color: #aaa; letter-spacing: 1px; text-transform: uppercase; }
+    .flight-price { font-family: 'Montserrat', sans-serif; font-size: clamp(20px,2vw,26px); font-weight: 800; color: var(--blue); line-height: 1; }
+    .flight-price sub { font-size: 12px; font-weight: 600; vertical-align: baseline; margin-right: 2px; }
+    .flight-price-per { font-size: 11px; color: #aaa; font-family: 'Montserrat', sans-serif; font-weight: 600; }
+    .btn-book-flight {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 10px 20px; background: var(--orange); color: #fff;
+      font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 800;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      border-radius: 8px; border: none; cursor: pointer;
+      transition: background .2s, transform .15s; white-space: nowrap;
+    }
+    .btn-book-flight:hover { background: #e0941a; transform: translateY(-1px); }
+
+    /* Availability badge */
+    .seat-badge {
+      font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 700;
+      letter-spacing: .5px;
+    }
+    .seat-badge.low { color: #e74c3c; }
+    .seat-badge.ok { color: #27ae60; }
+
+    /* Loading state */
+    .search-loading {
+      text-align: center; padding: 40px 20px; display: none;
+    }
+    .search-loading.visible { display: block; }
+    .loading-spinner {
+      display: inline-block; width: 40px; height: 40px;
+      border: 3px solid #e0e8f5; border-top-color: var(--blue);
+      border-radius: 50%; animation: spin .7s linear infinite; margin-bottom: 14px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-text { font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; color: #888; letter-spacing: 1px; }
+
+    /* No results */
+    .no-results { text-align: center; padding: 40px 20px; display: none; }
+    .no-results.visible { display: block; }
+    .no-results-icon { font-size: 48px; margin-bottom: 14px; }
+    .no-results h3 { font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 800; color: #1b3a5c; margin-bottom: 8px; }
+    .no-results p { font-size: 13px; color: #888; }
+
+    /* ══ FOOTER ══ */
+     footer { background: #0c111d; color: #9aa5b4; position: relative; overflow: hidden; }
+    footer::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background: linear-gradient(to right, transparent, rgba(0,87,168,0.6), rgba(245,166,35,0.4), transparent); }
+    .footer-top { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr 1.1fr; gap: clamp(20px,3.5vw,60px); align-items: start; padding: clamp(10px,3vw,50px) clamp(24px,5vw,80px) clamp(22px,4vw,36px); }
+    .footer-brand-name { font-family:'Montserrat',sans-serif; font-size:clamp(16px,1.6vw,20px); font-weight:800; color:#fff; letter-spacing:1px; margin-bottom:10px; }
+    .footer-brand-desc { font-size:clamp(11px,0.9vw,13px); color:#6b7280; line-height:1.75; margin-bottom:22px; max-width:230px; }
+    .social-row { display:flex; gap:10px; }
+    .social-btn { width:36px; height:36px; border-radius:8px; background:#1c2333; border:1px solid #2d3748; display:flex; align-items:center; justify-content:center; color:#6b7280; font-size:14px; text-decoration:none; font-family:'Montserrat',sans-serif; font-weight:700; transition:background .2s,color .2s,border-color .2s; }
+    .social-btn:hover { background:var(--blue); color:#fff; border-color:var(--blue); }
+    .footer-col h4 { font-family:'Montserrat',sans-serif; font-size:clamp(9px,0.8vw,11px); font-weight:700; color:#fff; letter-spacing:2px; text-transform:uppercase; margin-bottom:clamp(14px,1.4vw,20px); position:relative; padding-bottom:10px; }
+    .footer-col h4::after { content:''; position:absolute; left:0; bottom:0; width:20px; height:2px; background:var(--orange); border-radius:2px; }
+    .footer-col ul { list-style:none; }
+    .footer-col ul li { margin-bottom:clamp(8px,0.8vw,12px); }
+    .footer-col ul li a, .footer-col ul li span { font-size:clamp(11px,0.9vw,13px); color:#6b7280; text-decoration:none; transition:color .2s; display:flex; align-items:flex-start; gap:8px; line-height:1.5; }
+    .footer-col ul li a:hover { color:#fff; }
+    .footer-col p { font-size:clamp(11px,0.9vw,13px); color:#6b7280; line-height:1.75; }
+    .payment-badges { display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
+    .pay-badge { background:#1c2333; border:1px solid #2d3748; border-radius:6px; padding:5px 11px; font-family:'Montserrat',sans-serif; font-size:clamp(9px,0.75vw,11px); font-weight:700; color:#6b7280; letter-spacing:0.5px; }
+    .footer-bottom { border-top:1px solid #1c2333; padding:clamp(16px,2vw,22px) clamp(24px,5vw,80px); display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+    .footer-bottom-copy { font-size:clamp(10px,0.85vw,12px); color:#4b5563; font-family:'Montserrat',sans-serif; font-weight:600; }
+    .footer-bottom-links { display:flex; gap:clamp(16px,2vw,28px); }
+    .footer-bottom-links a { font-size:clamp(10px,0.85vw,12px); color:#4b5563; text-decoration:none; transition:color .2s; font-family:'Montserrat',sans-serif; font-weight:600; }
+    .footer-bottom-links a:hover { color:#fff; }
+
+
+    /* Booking popup */
+    .booking-popup-bg {
+      position: fixed; inset: 0; z-index: 600;
+      background: rgba(0,0,0,.55); backdrop-filter: blur(4px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity .25s ease; padding: 16px;
+    }
+    .booking-popup-bg.open { opacity: 1; pointer-events: all; }
+    .booking-popup {
+      background: #fff; border-radius: 20px; width: 100%; max-width: 560px;
+      box-shadow: 0 24px 80px rgba(0,0,0,.22);
+      transform: scale(.95) translateY(16px); transition: transform .3s ease; overflow: hidden;
+      max-height: 90vh; overflow-y: auto;
+    }
+    .booking-popup-bg.open .booking-popup { transform: scale(1) translateY(0); }
+    .booking-popup-head {
+      background: linear-gradient(135deg, var(--blue) 0%, #003d7a 100%);
+      padding: 22px 28px; color: #fff; position: relative;
+    }
+    .booking-popup-head h3 { font-family: 'Montserrat', sans-serif; font-size: clamp(16px,1.5vw,20px); font-weight: 800; }
+    .booking-popup-head p { font-size: 13px; opacity: .8; margin-top: 4px; }
+    .booking-popup-close {
+      position: absolute; top: 16px; right: 18px; width: 30px; height: 30px; border-radius: 50%;
+      background: rgba(255,255,255,.18); border: none; color: #fff; font-size: 15px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .2s;
+    }
+    .booking-popup-close:hover { background: rgba(255,255,255,.32); }
+    .booking-popup-body { padding: 24px 28px; }
+    .bfrow { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+    .bfrow.full { grid-template-columns: 1fr; }
+    .bfg { display: flex; flex-direction: column; gap: 5px; }
+    .bfg label { font-family: 'Montserrat', sans-serif; font-size: clamp(9px,.75vw,11px); font-weight: 700; letter-spacing: .5px; text-transform: uppercase; color: #555; }
+    .bfg label span { color: var(--orange); }
+    .bfg input, .bfg select, .bfg textarea {
+      border: 1.5px solid #e0e5ec; border-radius: 8px; padding: 10px 13px;
+      font-size: clamp(12px,.95vw,14px); color: var(--text-dark);
+      font-family: 'Open Sans', sans-serif; outline: none; transition: border-color .2s; background: #fafbfc;
+    }
+    .bfg input:focus, .bfg select:focus, .bfg textarea:focus { border-color: var(--blue); background: #fff; }
+    .booking-popup-footer { padding: 0 28px 24px; display: flex; justify-content: flex-end; gap: 12px; }
+    .btn-cancel {
+      padding: 11px 24px; background: #f0f2f5; color: #666;
+      font-family: 'Montserrat', sans-serif; font-size: clamp(10px,.85vw,12px); font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase; border-radius: 8px; border: none; cursor: pointer; transition: background .2s;
+    }
+    .btn-cancel:hover { background: #e2e5eb; }
+    .btn-submit-booking {
+      padding: 11px 28px; background: var(--orange); color: #fff;
+      font-family: 'Montserrat', sans-serif; font-size: clamp(10px,.85vw,12px); font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase; border-radius: 8px; border: none;
+      cursor: pointer; transition: background .2s, transform .15s;
+    }
+    .btn-submit-booking:hover { background: #e0941a; transform: translateY(-1px); }
+    .booking-success { display: none; flex-direction: column; align-items: center; padding: 40px 28px; text-align: center; }
+    .booking-success.show { display: flex; }
+    .booking-success-icon {
+      width: 72px; height: 72px; border-radius: 50%; background: #eafaf1;
+      display: flex; align-items: center; justify-content: center; font-size: 36px; margin-bottom: 18px;
+      animation: pop-in .4s cubic-bezier(.36,.07,.19,.97);
+    }
+    @keyframes pop-in { 0%{transform:scale(.5);opacity:0} 80%{transform:scale(1.1)} 100%{transform:scale(1);opacity:1} }
+    .booking-success h3 { font-family: 'Montserrat', sans-serif; font-size: clamp(18px,2vw,24px); font-weight: 800; color: #1b3a5c; margin-bottom: 10px; }
+    .booking-success p { font-size: 14px; color: #666; line-height: 1.65; max-width: 360px; margin: 0 auto 22px; }
+
+    /* Flight detail summary inside popup */
+    .flight-summary-strip {
+      background: #f0f5ff; border-radius: 10px; padding: 14px 18px;
+      margin-bottom: 20px; display: flex; align-items: center; gap: 14px;
+    }
+    .flight-summary-strip img { width: 44px; height: 44px; object-fit: contain; border-radius: 6px; border: 1px solid #d0ddf5; }
+    .flight-summary-info { flex: 1; }
+    .flight-summary-route { font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 800; color: #1b3a5c; }
+    .flight-summary-details { font-size: 12px; color: #666; margin-top: 3px; }
+    .flight-summary-price { font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 800; color: var(--blue); white-space: nowrap; }
+
+    /* ══ RESPONSIVE ══ */
+    @media (max-width: 768px) {
+      nav ul { display: none; }
+      .hamburger { display: flex; }
+      .footer-top { grid-template-columns: repeat(2, 1fr); }
+      .footer-logo { grid-column: 1 / -1; }
+      /* Search card full-width on tablet */
+      .search-wrapper { padding: clamp(12px, 2vw, 20px) clamp(12px, 3vw, 24px); }
+      .btn-search-flights { width: 100%; justify-content: center; }
+      .search-footer { justify-content: stretch; }
+      /* Results header wrap nicely */
+      .results-header { flex-direction: column; align-items: flex-start; }
+    }
+    @media (max-width: 600px) {
+      .flights-hero-content h1 { font-size: clamp(22px, 7vw, 32px); }
+      /* Booking popup full width */
+      .booking-popup { max-width: 100%; border-radius: 16px; }
+      .booking-popup-footer { flex-wrap: wrap; }
+      .btn-cancel, .btn-submit-booking { flex: 1; text-align: center; }
+      /* bfrow: one column on small screens */
+      .bfrow { grid-template-columns: 1fr; }
+      /* Trip tabs full width */
+      .trip-tabs { width: 100%; }
+      .trip-tab { flex: 1; text-align: center; }
+      /* Flight summary strip stack */
+      .flight-summary-strip { flex-wrap: wrap; }
+      .flight-summary-price { white-space: normal; }
+    }
+    @media (max-width: 560px) {
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 24px; }
+      .footer-logo { grid-column: 1 / -1; }
+    }
+    @media (max-width: 480px) {
+      .footer-top { grid-template-columns: 1fr; gap: 20px; }
+      .footer-logo { grid-column: unset; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .footer-bottom-links { flex-wrap: wrap; gap: 12px; }
+      /* Flights list: remove max-height on mobile so it's fully scrollable */
+      #flightsList { max-height: none; padding-right: 0; }
+      /* Flight airline on mobile: horizontal layout */
+      .flight-airline {
+        flex-direction: row; justify-content: flex-start;
+        padding: 14px 16px; border-right: none; border-bottom: 1px solid #f0f0f0;
+      }
+      .flight-airline img { width: 44px; height: 44px; }
+      .flight-info { padding: 14px 16px; }
+      .flight-price-col { padding: 14px 16px; }
+      .btn-book-flight { width: 100%; justify-content: center; }
+    }
+    @media (max-width: 400px) {
+      .footer-top { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="read-progress"></div>
+
+<!-- ══ NAVBAR ══ -->
+<nav id="mainNav">
+  <a class="logo" href="index.html">
+    <img src="LOGO.svg" alt="Hilway Travels"/>
+  </a>
+
+  <ul id="nav-links">
+    <li><a href="index.html" >HOME</a></li>
+    <li><a href="destinations.html">DESTINATION</a></li>
+    <li><a href="visa-assistance.html">VISA ASSISTANCE</a></li>
+    <li><a href="flights.html" class="active">FLIGHTS BOOKINGS</a></li>
+    <li><a href="about.html">ABOUT US</a></li>
+    <li><a href="contact.html">CONTACT US</a></li>
+  </ul>
+
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</nav>
+
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html">HOME</a>
+  <a href="destinations.html">DESTINATION</a>
+  <a href="visa-assistance.html">VISA ASSISTANCE</a>
+  <a href="flights.html">FLIGHTS BOOKINGS</a>
+  <a href="about.html">ABOUT US</a>
+  <a href="contact.html">CONTACT US</a>
+</div>
+
+<!-- ══ HERO ══ -->
+<!-- ══ HERO ══ -->
+<section class="flights-hero">
+
+  <div class="flights-hero-bg">
+    <img src="resources/Destinations/Singapore.jpg" alt="">
+  </div>
+
+  <div class="flights-hero-overlay"></div>
+
+  <div class="flights-hero-content">
+    <div class="flights-hero-badge">✈️ Book Your Flight</div>
+    <h1>Search and Compare Flights</h1>
+    <p>Find the best deals to your favourite destinations — fast, easy, and hassle-free.</p>
+  </div>
+
+</section>
+
+<!-- ══ SEARCH WIDGET ══ -->
+<div class="search-wrapper">
+  <div class="search-card">
+    <h2>Search Flights</h2>
+
+    <div class="trip-tabs">
+      <button class="trip-tab active" id="tabOneWay" onclick="setTripType('oneway')">One-Way</button>
+      <button class="trip-tab" id="tabRoundTrip" onclick="setTripType('roundtrip')">Round-Trip</button>
+    </div>
+
+    <!-- Airport fields -->
+    <div class="search-row-airports">
+      <!-- From -->
+      <div class="airport-field" id="fieldFrom" onclick="toggleDropdown('from')">
+        <div class="airport-icon">✈</div>
+        <div style="flex:1;">
+          <div class="airport-label">Flying From</div>
+          <div class="airport-value" id="fromDisplay">Manila (MNL)</div>
+          <div class="airport-sub" id="fromSubDisplay">Ninoy Aquino International Airport</div>
+        </div>
+        <div class="airport-dropdown" id="dropdownFrom">
+          <input class="airport-search-input" placeholder="Search airport or city…" oninput="filterAirports('from', this.value)" onclick="event.stopPropagation()"/>
+          <div id="airportListFrom"></div>
+        </div>
+      </div>
+
+      <!-- Swap -->
+      <button class="swap-btn" onclick="swapAirports()" title="Swap airports">⇄</button>
+
+      <!-- To -->
+      <div class="airport-field" id="fieldTo" onclick="toggleDropdown('to')">
+        <div class="airport-icon">🏁</div>
+        <div style="flex:1;">
+          <div class="airport-label">Flying To</div>
+          <div class="airport-value" id="toDisplay">Kalibo (KLO)</div>
+          <div class="airport-sub" id="toSubDisplay">Kalibo International Airport</div>
+        </div>
+        <div class="airport-dropdown" id="dropdownTo">
+          <input class="airport-search-input" placeholder="Search airport or city…" oninput="filterAirports('to', this.value)" onclick="event.stopPropagation()"/>
+          <div id="airportListTo"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Date & details row -->
+    <div class="search-row-details">
+      <div class="detail-field">
+        <label>Departure Date</label>
+        <input type="date" id="departDate" value=""/>
+      </div>
+      <div class="detail-field" id="returnDateField">
+        <label>Return Date</label>
+        <input type="date" id="returnDate" value=""/>
+      </div>
+      <div class="detail-field">
+        <label>Passengers</label>
+        <select id="passengers">
+          <option>1 Passenger</option>
+          <option>2 Passengers</option>
+          <option>3 Passengers</option>
+          <option>4 Passengers</option>
+          <option>5+ Passengers</option>
+        </select>
+      </div>
+      <div class="detail-field">
+        <label>Cabin Class</label>
+        <select id="cabinClass">
+          <option>Economy</option>
+          <option>Premium Economy</option>
+          <option>Business</option>
+          <option>First Class</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="search-footer">
+      <button class="btn-search-flights" onclick="searchFlights()">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+        Search Flights
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ LOADING ══ -->
+<div class="results-section" id="loadingSection" style="display:none;">
+  <div class="search-loading visible">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Searching available flights…</div>
+  </div>
+</div>
+
+<!-- ══ RESULTS ══ -->
+<div class="results-section" id="resultsSection">
+  <div class="results-header">
+    <div>
+      <div class="results-title" id="resultsTitle">Available Flights</div>
+      <div style="margin-top:4px;"><span class="results-count" id="resultsCount">6 flights found</span></div>
+    </div>
+    <div class="results-sort">
+      Sort by:
+      <select onchange="sortFlights(this.value)">
+        <option value="price">Price (Lowest)</option>
+        <option value="duration">Duration (Shortest)</option>
+        <option value="departure">Departure (Earliest)</option>
+      </select>
+    </div>
+  </div>
+  <div id="flightsList"></div>
+</div>
+
+<!-- ══ NO RESULTS ══ -->
+<div class="results-section" id="noResultsSection">
+  <div class="no-results visible">
+    <div class="no-results-icon">🔍</div>
+    <h3>No Flights Found</h3>
+    <p>Try adjusting your search criteria or choose a different route.</p>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-top">
+
+    <!-- Brand -->
+    <div class="footer-col footer-logo">
+   <img src="LOGO.svg" alt="Hilway Travels" style="height:100px;width:auto;display:block;filter:brightness(0) invert(1);">
+      <div class="footer-brand-desc">Inspired by the Aklanon/Hiligaynon word "Hilway," we aim to make every journey feel easy, well-organized, and worry-free.</div>
+      <div class="social-row">
+        <a class="social-btn" href="#" aria-label="Facebook">f</a>
+        <a class="social-btn" href="#" aria-label="Instagram">in</a>
+        <a class="social-btn" href="#" aria-label="X">𝕏</a>
+        <a class="social-btn" href="#" aria-label="TikTok">ꚠ</a>
+      </div>
+    </div>
+
+    <!-- Contact -->
+    <div class="footer-col">
+      <h4>Contact Us</h4>
+      <ul>
+        <li><span><span class="footer-contact-icon">📍</span>Kalibo, Aklan, Philippines</span></li>
+        <li><span><span class="footer-contact-icon">📞</span>+63 939 151 0082</span></li>
+        <li><span><span class="footer-contact-icon">✉️</span>hilwaytravels.ph</span></li>
+        <li><span><span class="footer-contact-icon">🌐</span>www.hilway.com</span></li>
+      </ul>
+    </div>
+
+    <!-- Navigation -->
+    <div class="footer-col">
+      <h4>Explore</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#">Destinations</a></li>
+        <li><a href="#">Visa Assistance</a></li>
+        <li><a href="#">Tour Packages</a></li>
+        <li><a href="#">Other Services</a></li>
+        <li><a href="about.html">About Us</a></li>
+      </ul>
+    </div>
+
+    <!-- Company -->
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">Blogs &amp; News</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="about.html">Our Team</a></li>
+        <li><a href="#">Press</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </div>
+
+    <!-- Safe Payment -->
+    <div class="footer-col">
+      <h4>Safe Payment</h4>
+      <p style="margin-bottom:14px;">Payments are encrypted and transferred securely with SSL protocol.</p>
+      <div class="payment-badges">
+        <span class="pay-badge">💳 Visa</span>
+        <span class="pay-badge">💳 Mastercard</span>
+        <span class="pay-badge">📱 GCash</span>
+        <span class="pay-badge">🏦 Bank Transfer</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <span class="footer-bottom-copy">© 2026 HILWAY TRAVELS. All Rights Reserved.</span>
+    <div class="footer-bottom-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Cookie Settings</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ══ BOOKING POPUP ══ -->
+<div class="booking-popup-bg" id="bookingPopupBg">
+  <div class="booking-popup">
+    <div class="booking-popup-head">
+      <h3>Book Your Flight</h3>
+      <p id="bookingPopupSub">Complete your booking inquiry</p>
+      <button class="booking-popup-close" onclick="closeBookingPopup()">✕</button>
+    </div>
+    <div id="bookingFormWrap">
+      <div class="booking-popup-body">
+        <!-- Flight summary -->
+        <div class="flight-summary-strip" id="bookingSummaryStrip">
+          <img id="bookingSummaryLogo" src="" alt=""/>
+          <div class="flight-summary-info">
+            <div class="flight-summary-route" id="bookingSummaryRoute">—</div>
+            <div class="flight-summary-details" id="bookingSummaryDetails">—</div>
+          </div>
+          <div class="flight-summary-price" id="bookingSummaryPrice">—</div>
+        </div>
+        <div class="bfrow">
+          <div class="bfg"><label>First Name <span>*</span></label><input id="bFirstName" placeholder="Juan"/></div>
+          <div class="bfg"><label>Last Name <span>*</span></label><input id="bLastName" placeholder="Dela Cruz"/></div>
+        </div>
+        <div class="bfrow">
+          <div class="bfg"><label>Email Address <span>*</span></label><input id="bEmail" type="email" placeholder="juan@email.com"/></div>
+          <div class="bfg"><label>Phone Number <span>*</span></label><input id="bPhone" placeholder="+63 9XX XXX XXXX"/></div>
+        </div>
+        <div class="bfrow">
+          <div class="bfg"><label>Passengers <span>*</span></label><input id="bPax" placeholder="e.g. 2"/></div>
+          <div class="bfg"><label>Cabin Class</label><input id="bCabin" readonly/></div>
+        </div>
+        <div class="bfrow full">
+          <div class="bfg"><label>Special Requests</label><textarea id="bNotes" placeholder="Meal preference, wheelchair assistance, etc."></textarea></div>
+        </div>
+      </div>
+      <div class="booking-popup-footer">
+        <button class="btn-cancel" onclick="closeBookingPopup()">Cancel</button>
+        <button class="btn-submit-booking" onclick="submitFlightBooking()">Confirm Inquiry ✈️</button>
+      </div>
+    </div>
+    <div class="booking-success" id="bookingSuccess">
+      <div class="booking-success-icon">✅</div>
+      <h3>Inquiry Received!</h3>
+      <p id="bookingSuccessMsg">Thank you! Our team will reach out to you within 1–2 business days.</p>
+      <button class="btn-book-flight" onclick="closeBookingPopup()">Done</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════
+   DATA
+══════════════════════ */
+const airports = [
+  { code:'MNL', name:'Manila', full:'Ninoy Aquino International Airport', country:'Philippines' },
+  { code:'KLO', name:'Kalibo', full:'Kalibo International Airport', country:'Philippines' },
+  { code:'CEB', name:'Cebu', full:'Mactan-Cebu International Airport', country:'Philippines' },
+  { code:'DVO', name:'Davao', full:'Francisco Bangoy International Airport', country:'Philippines' },
+  { code:'ILO', name:'Iloilo', full:'Iloilo International Airport', country:'Philippines' },
+  { code:'BCD', name:'Bacolod', full:'Bacolod-Silay International Airport', country:'Philippines' },
+  { code:'TAG', name:'Tagbilaran (Bohol)', full:'Bohol-Panglao International Airport', country:'Philippines' },
+  { code:'SIN', name:'Singapore', full:'Singapore Changi Airport', country:'Singapore' },
+  { code:'NRT', name:'Tokyo (Narita)', full:'Narita International Airport', country:'Japan' },
+  { code:'KIX', name:'Osaka', full:'Kansai International Airport', country:'Japan' },
+  { code:'DXB', name:'Dubai', full:'Dubai International Airport', country:'UAE' },
+  { code:'DOH', name:'Doha', full:'Hamad International Airport', country:'Qatar' },
+  { code:'ICN', name:'Seoul', full:'Incheon International Airport', country:'South Korea' },
+  { code:'BKK', name:'Bangkok', full:'Suvarnabhumi Airport', country:'Thailand' },
+  { code:'HKG', name:'Hong Kong', full:'Hong Kong International Airport', country:'Hong Kong' },
+  { code:'LAX', name:'Los Angeles', full:'Los Angeles International Airport', country:'USA' },
+];
+
+const destinations = [
+  { name:'Bukidnon', code:'BXU', airport:'Laguindingan Airport' },
+  { name:'Cebu & Bohol', code:'CEB', airport:'Mactan-Cebu International Airport' },
+  { name:'Siargao', code:'IAO', airport:'Sayak Airport' },
+  { name:'La Union', code:'MNL', airport:'Ninoy Aquino Intl (via Manila)' },
+  { name:'Singapore', code:'SIN', airport:'Singapore Changi Airport' },
+  { name:'Tokyo–Hakone', code:'NRT', airport:'Narita International Airport' },
+  { name:'Osaka–Kyoto', code:'KIX', airport:'Kansai International Airport' },
+];
+
+const airlines = [
+  { 
+  name: 'Philippine Airlines',
+  logo: 'resources/Airline-Logo/Philippine-Airlines.jpg'
+ },
+  { name:'Cebu Pacific', logo:'resources/Airline-Logo/Cebu-Pacific.png' },
+  { name:'AirAsia', logo:'resources/Airline-Logo/AirAsia.png' },
+  { name:'Emirates', logo:'resources/Airline-Logo/Emirates.png' },
+  { name:'Qatar Airways', logo:'resources/Airline-Logo/Qatar-Airways.png' },
+  { name:'Japan Airlines', logo:'resources/Airline-Logo/Japan-Airlines.jpg' },
+  { name:'Korean Air', logo:'resources/Airline-Logo/Korean-Air.png' },
+  { name:'Etihad Airways', logo:'resources/Airline-Logo/Etihad-Airways.png' },
+  { name:'Thai Airways', logo:'resources/Airline-Logo/Thai-Airways.png' },
+];
+
+/* ══════════════════════
+   STATE
+══════════════════════ */
+let tripType = 'oneway';
+let fromAirport = airports[0]; // MNL
+let toAirport   = airports[1]; // KLO
+let currentFlights = [];
+let selectedFlight = null;
+
+/* ══════════════════════
+   INIT
+══════════════════════ */
+window.addEventListener('DOMContentLoaded', () => {
+  // Set default dates
+  const today = new Date();
+  const tomorrow = new Date(today); tomorrow.setDate(today.getDate()+1);
+  const nextWeek = new Date(today); nextWeek.setDate(today.getDate()+8);
+  document.getElementById('departDate').value = formatDate(tomorrow);
+  document.getElementById('returnDate').value  = formatDate(nextWeek);
+
+  // Init dropdowns
+  renderAirportList('from', airports);
+  renderAirportList('to', airports);
+
+  // Close dropdowns on outside click
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('#fieldFrom')) closeDropdown('from');
+    if (!e.target.closest('#fieldTo'))   closeDropdown('to');
+  });
+
+  // Disable return date for one-way
+  setTripType('oneway');
+});
+
+function formatDate(d) {
+  return d.toISOString().split('T')[0];
+}
+
+/* ══════════════════════
+   TRIP TYPE
+══════════════════════ */
+function setTripType(type) {
+  tripType = type;
+  document.getElementById('tabOneWay').classList.toggle('active', type === 'oneway');
+  document.getElementById('tabRoundTrip').classList.toggle('active', type === 'roundtrip');
+  const rf = document.getElementById('returnDateField');
+  rf.classList.toggle('disabled', type === 'oneway');
+}
+
+/* ══════════════════════
+   AIRPORT DROPDOWNS
+══════════════════════ */
+function toggleDropdown(side) {
+  const dd = document.getElementById('dropdown' + (side === 'from' ? 'From' : 'To'));
+  const isOpen = dd.classList.contains('open');
+  closeDropdown('from'); closeDropdown('to');
+  if (!isOpen) {
+    dd.classList.add('open');
+    dd.querySelector('input').focus();
+  }
+}
+function closeDropdown(side) {
+  document.getElementById('dropdown' + (side === 'from' ? 'From' : 'To')).classList.remove('open');
+}
+function filterAirports(side, query) {
+  const q = query.toLowerCase();
+  const filtered = airports.filter(a =>
+    a.code.toLowerCase().includes(q) ||
+    a.name.toLowerCase().includes(q) ||
+    a.full.toLowerCase().includes(q) ||
+    a.country.toLowerCase().includes(q)
+  );
+  renderAirportList(side, filtered);
+}
+function renderAirportList(side, list) {
+  const el = document.getElementById('airportList' + (side === 'from' ? 'From' : 'To'));
+  el.innerHTML = list.map(a => `
+    <div class="airport-option" onclick="selectAirport('${side}','${a.code}'); event.stopPropagation();">
+      <div class="airport-option-code">${a.code}</div>
+      <div>
+        <div style="font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;color:#222;">${a.name}</div>
+        <div class="airport-option-name">${a.full}</div>
+      </div>
+    </div>
+  `).join('');
+}
+function selectAirport(side, code) {
+  const a = airports.find(x => x.code === code);
+  if (!a) return;
+  if (side === 'from') {
+    fromAirport = a;
+    document.getElementById('fromDisplay').textContent = `${a.name} (${a.code})`;
+    document.getElementById('fromSubDisplay').textContent = a.full;
+  } else {
+    toAirport = a;
+    document.getElementById('toDisplay').textContent = `${a.name} (${a.code})`;
+    document.getElementById('toSubDisplay').textContent = a.full;
+  }
+  closeDropdown(side);
+}
+function swapAirports() {
+  const tmp = fromAirport;
+  fromAirport = toAirport;
+  toAirport = tmp;
+  document.getElementById('fromDisplay').textContent = `${fromAirport.name} (${fromAirport.code})`;
+  document.getElementById('fromSubDisplay').textContent = fromAirport.full;
+  document.getElementById('toDisplay').textContent = `${toAirport.name} (${toAirport.code})`;
+  document.getElementById('toSubDisplay').textContent = toAirport.full;
+}
+
+/* ══════════════════════
+   GENERATE FLIGHTS
+══════════════════════ */
+function generateFlights(from, to) {
+  const shuffled = [...airlines].sort(() => Math.random() - .5);
+  const picked = shuffled.slice(0, 6);
+
+  // Random departure times
+  const departureTimes = ['05:30','06:15','08:00','09:45','11:20','13:50','15:10','17:30','19:00','21:45'];
+  const durations = [65, 80, 95, 110, 180, 220, 300, 420, 480, 600, 720, 900];
+
+  return picked.map((airline, i) => {
+    const depMinutes = (() => {
+      const t = departureTimes[Math.floor(Math.random()*departureTimes.length)];
+      const [h,m] = t.split(':').map(Number); return h*60+m;
+    })();
+    const dur = durations[Math.floor(Math.random()*durations.length)];
+    const arrMinutes = depMinutes + dur;
+    const stops = dur > 300 ? (Math.random() > .4 ? 1 : 0) : 0;
+    const basePrice = 1500 + Math.floor(Math.random() * 12000);
+    const seats = Math.floor(Math.random()*12)+1;
+    return {
+      id: i,
+      airline,
+      dep: minutesToTime(depMinutes),
+      arr: minutesToTime(arrMinutes),
+      durMin: dur,
+      stops,
+      price: basePrice,
+      seats,
+      cabin: document.getElementById('cabinClass').value,
+      flightNo: airline.name.substring(0,2).toUpperCase() + Math.floor(Math.random()*900+100),
+    };
+  }).sort((a,b) => a.price - b.price);
+}
+
+function minutesToTime(m) {
+  const h = Math.floor(m % (24*60) / 60);
+  const min = m % 60;
+  return String(h).padStart(2,'0') + ':' + String(min).padStart(2,'0');
+}
+function formatDuration(min) {
+  const h = Math.floor(min/60), m = min%60;
+  return h > 0 ? `${h}h ${m}m` : `${m}m`;
+}
+
+/* ══════════════════════
+   SEARCH
+══════════════════════ */
+function searchFlights() {
+  // Show loading
+  document.getElementById('loadingSection').style.display = 'block';
+  document.getElementById('resultsSection').classList.remove('visible');
+  document.getElementById('noResultsSection').classList.remove('visible');
+  document.getElementById('loadingSection').querySelector('.search-loading').classList.add('visible');
+
+  setTimeout(() => {
+    document.getElementById('loadingSection').style.display = 'none';
+    currentFlights = generateFlights(fromAirport, toAirport);
+    renderFlights(currentFlights);
+    document.getElementById('resultsSection').classList.add('visible');
+    document.getElementById('resultsSection').scrollIntoView({ behavior:'smooth', block:'start' });
+  }, 1200);
+}
+
+function renderFlights(flights) {
+  const depDate = document.getElementById('departDate').value;
+  const pax = document.getElementById('passengers').value;
+
+  document.getElementById('resultsTitle').textContent =
+    `Flights: ${fromAirport.name} (${fromAirport.code}) → ${toAirport.name} (${toAirport.code})`;
+  document.getElementById('resultsCount').textContent = `${flights.length} flight${flights.length !== 1 ? 's':''} found`;
+
+  document.getElementById('flightsList').innerHTML = flights.map((f, idx) => `
+    <div class="flight-card" style="animation-delay:${idx * 0.07}s;">
+      <!-- Airline -->
+      <div class="flight-airline">
+        <img src="${f.airline.logo}" alt="${f.airline.name}" onerror="this.style.background='#f0f4ff';this.style.padding='8px';"/>
+        <div class="flight-airline-name">${f.airline.name}</div>
+        <div style="font-family:'Montserrat',sans-serif;font-size:10px;color:#aaa;font-weight:600;">${f.flightNo}</div>
+      </div>
+
+      <!-- Info -->
+      <div class="flight-info">
+        <div class="flight-route">
+          <div>
+            <div class="flight-time">${f.dep}</div>
+            <div class="flight-airport-code">${fromAirport.code}</div>
+          </div>
+          <div class="flight-divider">
+            <div class="flight-duration">${formatDuration(f.durMin)}</div>
+            <div class="flight-line">
+              <div class="flight-line-dot"></div>
+              <div class="flight-line-bar"></div>
+              <div class="flight-line-plane">✈</div>
+              <div class="flight-line-bar"></div>
+              <div class="flight-line-dot"></div>
+            </div>
+            <div class="flight-stops ${f.stops === 0 ? 'nonstop':''}">${f.stops === 0 ? 'Nonstop' : f.stops + ' Stop'}</div>
+          </div>
+          <div>
+            <div class="flight-time">${f.arr}</div>
+            <div class="flight-airport-code">${toAirport.code}</div>
+          </div>
+        </div>
+        <div class="flight-meta">
+          <span class="flight-meta-chip">
+            <svg viewBox="0 0 24 24"><path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg>
+            ${f.cabin}
+          </span>
+          <span class="flight-meta-chip">
+            <svg viewBox="0 0 24 24"><path d="M17 20H7m5-16v16M3 8l3-3 3 3M15 8l3-3 3 3"/></svg>
+            7kg + 20kg checked
+          </span>
+          <span class="flight-meta-chip">📅 ${depDate || 'N/A'}</span>
+        </div>
+      </div>
+
+      <!-- Price -->
+      <div class="flight-price-col">
+        <div>
+          <div class="flight-price-label">From (per person)</div>
+          <div class="flight-price"><sub>₱</sub>${f.price.toLocaleString()}</div>
+          <div class="flight-price-per">${pax}</div>
+        </div>
+        <div class="seat-badge ${f.seats <= 4 ? 'low' : 'ok'}">
+          ${f.seats <= 4 ? `⚠ Only ${f.seats} left!` : `✓ ${f.seats} seats available`}
+        </div>
+        <button class="btn-book-flight" onclick="openBookingPopup(${f.id})">
+          Book Now ✈️
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function sortFlights(by) {
+  if (by === 'price') currentFlights.sort((a,b) => a.price - b.price);
+  else if (by === 'duration') currentFlights.sort((a,b) => a.durMin - b.durMin);
+  else if (by === 'departure') currentFlights.sort((a,b) => a.dep.localeCompare(b.dep));
+  renderFlights(currentFlights);
+}
+
+/* ══════════════════════
+   BOOKING POPUP
+══════════════════════ */
+function openBookingPopup(flightId) {
+  const f = currentFlights.find(x => x.id === flightId);
+  if (!f) return;
+  selectedFlight = f;
+
+  document.getElementById('bookingPopupSub').textContent =
+    `${f.airline.name} · ${fromAirport.code} → ${toAirport.code}`;
+  document.getElementById('bookingSummaryLogo').src = f.airline.logo;
+  document.getElementById('bookingSummaryLogo').alt = f.airline.name;
+  document.getElementById('bookingSummaryRoute').textContent =
+    `${fromAirport.name} → ${toAirport.name}`;
+  document.getElementById('bookingSummaryDetails').textContent =
+    `${f.flightNo} · ${f.dep} – ${f.arr} · ${formatDuration(f.durMin)} · ${f.stops === 0 ? 'Nonstop' : f.stops + ' Stop'}`;
+  document.getElementById('bookingSummaryPrice').textContent = `₱${f.price.toLocaleString()}`;
+  document.getElementById('bCabin').value = f.cabin;
+  document.getElementById('bPax').value = '';
+
+  document.getElementById('bookingFormWrap').style.display = '';
+  document.getElementById('bookingSuccess').classList.remove('show');
+  ['bFirstName','bLastName','bEmail','bPhone','bNotes'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  document.getElementById('bookingPopupBg').classList.add('open');
+}
+function closeBookingPopup() {
+  document.getElementById('bookingPopupBg').classList.remove('open');
+}
+function submitFlightBooking() {
+  const fn = document.getElementById('bFirstName').value.trim();
+  const ln = document.getElementById('bLastName').value.trim();
+  const em = document.getElementById('bEmail').value.trim();
+  const ph = document.getElementById('bPhone').value.trim();
+  const px = document.getElementById('bPax').value.trim();
+  if (!fn || !ln || !em || !ph || !px) {
+    alert('Please fill in all required fields.'); return;
+  }
+  document.getElementById('bookingFormWrap').style.display = 'none';
+  document.getElementById('bookingSuccessMsg').textContent =
+    `Thank you, ${fn}! We've received your flight inquiry for ${selectedFlight?.airline.name || 'your chosen flight'}. Our team will reach out to ${em} within 1–2 business days.`;
+  document.getElementById('bookingSuccess').classList.add('show');
+}
+document.getElementById('bookingPopupBg').addEventListener('click', function(e) {
+  if (e.target === this) closeBookingPopup();
+});
+
+/* ══════════════════════
+   NAVBAR & SCROLL
+══════════════════════ */
+const ham = document.getElementById('hamburger');
+const mob = document.getElementById('nav-mobile');
+ham.addEventListener('click', () => mob.classList.toggle('open'));
+
+const mainNav = document.getElementById('mainNav');
+const progressBar = document.getElementById('read-progress');
+const docHeight = () => document.documentElement.scrollHeight - window.innerHeight;
+let ticking = false;
+window.addEventListener('scroll', () => {
+  if (ticking) return;
+  window.requestAnimationFrame(() => {
+    mainNav.classList.toggle('scrolled', window.scrollY > 40);
+    if (progressBar) {
+      const pct = docHeight() > 0 ? (window.scrollY / docHeight()) * 100 : 0;
+      progressBar.style.width = Math.min(pct,100) + '%';
+    }
+    ticking = false;
+  });
+  ticking = true;
+}, { passive: true });
+
+/* ESC key */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeBookingPopup();
+});
+</script>
+</body>
+</html>
